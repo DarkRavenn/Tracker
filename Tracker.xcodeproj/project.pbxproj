@@ -58,13 +58,29 @@
 			children = (
 				6D1161D12CA5D35000F61435 /* AppDelegate.swift */,
 				6D1161D32CA5D35000F61435 /* SceneDelegate.swift */,
-				6D1161D52CA5D35000F61435 /* ViewController.swift */,
-				6D1161D72CA5D35000F61435 /* Main.storyboard */,
-				6D1161DA2CA5D35200F61435 /* Assets.xcassets */,
-				6D1161DC2CA5D35200F61435 /* LaunchScreen.storyboard */,
-				6D1161DF2CA5D35200F61435 /* Info.plist */,
+				6D1161E62CA5D94200F61435 /* Presentation */,
+				6D1161E52CA5D8EF00F61435 /* Resources */,
 			);
 			path = Tracker;
+			sourceTree = "<group>";
+		};
+		6D1161E52CA5D8EF00F61435 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				6D1161DC2CA5D35200F61435 /* LaunchScreen.storyboard */,
+				6D1161DA2CA5D35200F61435 /* Assets.xcassets */,
+				6D1161DF2CA5D35200F61435 /* Info.plist */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		6D1161E62CA5D94200F61435 /* Presentation */ = {
+			isa = PBXGroup;
+			children = (
+				6D1161D52CA5D35000F61435 /* ViewController.swift */,
+				6D1161D72CA5D35000F61435 /* Main.storyboard */,
+			);
+			path = Presentation;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -294,7 +310,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = WZ673AS6D2;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Tracker/Info.plist;
+				INFOPLIST_FILE = Tracker/Resources/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -327,7 +343,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = WZ673AS6D2;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Tracker/Info.plist;
+				INFOPLIST_FILE = Tracker/Resources/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
