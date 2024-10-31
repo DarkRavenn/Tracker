@@ -12,16 +12,22 @@ enum Resources {
         static var separator = UIColor.ypTabBarSeparator
         static var viewControllerBackground = UIColor.ypWhite
         static var searchBarPlaceholderColor = UIColor.ypSearchBarPlaceholder
+        static var dataPickerBackgroundColor = UIColor.ypDataPickerBackground
+    }
+    
+    enum Common {
+        static var dateFormat = "dd.MM.yy"
+        static var datePickerLocale = "ru_RU"
     }
     
     enum Strings {
+        
         enum TabBar {
             static var trackers = "Трекеры"
             static var statistic = "Статистика"
         }
         
         enum NavBar {
-            static var datePickerLocale = "ru_RU"
             static var searchBarPlaceholder = "Поиск"
             static var navigationHeader = "Трекеры"
         }

@@ -9,19 +9,13 @@ import UIKit
 
 final class TrackersViewController: UIViewController {
     
+    private let datePicker = TrackerDatePicker()
+    private var TrackerDatePickerObserver: NSObjectProtocol?
+    
     private lazy var addButton: UIBarButtonItem = {
         let button = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addTapped))
         button.tintColor = UIColor.ypBlack
         return button
-    }()
-    
-    private lazy var datePicker: UIDatePicker = {
-        let datePicker = UIDatePicker()
-        datePicker.datePickerMode = .date
-        datePicker.preferredDatePickerStyle = .compact
-        datePicker.locale = Locale(identifier: Resources.Strings.NavBar.datePickerLocale)
-        datePicker.addTarget(self, action: #selector(dateChanged), for: .valueChanged)
-        return datePicker
     }()
     
     private lazy var searchBarController: UISearchController = {
@@ -72,13 +66,23 @@ final class TrackersViewController: UIViewController {
             emptyTrackersTextLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             emptyTrackersTextLabel.topAnchor.constraint(equalTo: emptyTrackersImageView.bottomAnchor, constant: 8),
         ])
+        
+        TrackerDatePickerObserver = NotificationCenter.default
+            .addObserver(
+                forName: TrackerDatePicker.didChangeNotification,
+                object: nil,
+                queue: .main
+            ) { [weak self] _ in
+                guard let self = self else { return }
+                self.dateChanged()
+            }
     }
     
     // обновление текущей даты
-    @objc private func dateChanged() {
-        currentDate = datePicker.date
+    private func dateChanged() {
+        currentDate = datePicker.datePicker.date
     }
-    
+
     // добавление нового трекера
     @objc private func addTapped() {
     }
