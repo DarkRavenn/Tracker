@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class TabBarController: UITabBarController {
+final class TabBarViewController: UITabBarController {
         
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,7 +24,7 @@ final class TabBarController: UITabBarController {
     }
     
     private func configure() {
-        tabBar.backgroundColor = .ypWhite
+        view.backgroundColor = Resources.Colors.viewControllerBackground
         
         tabBar.layer.borderColor = Resources.Colors.separator.cgColor
         tabBar.layer.borderWidth = 1
@@ -32,7 +32,7 @@ final class TabBarController: UITabBarController {
         
         
         // вкладка Трекеры
-        let trackerViewController = TrackersViewController()
+        let trackerViewController = UINavigationController(rootViewController: TrackersViewController())
         trackerViewController.tabBarItem = UITabBarItem(
             title: Resources.Strings.TabBar.trackers,
             image: Resources.Images.TabBar.trackers,
