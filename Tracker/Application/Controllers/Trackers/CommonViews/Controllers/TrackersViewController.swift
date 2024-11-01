@@ -42,6 +42,7 @@ final class TrackersViewController: UIViewController {
     private lazy var searchBarController: UISearchController = {
         let searchBarController = UISearchController(searchResultsController: nil)
         searchBarController.searchBar.placeholder = Resources.Strings.NavBar.searchBarPlaceholder
+        searchBarController.searchBar.delegate = self
         searchBarController.searchBar.placeholderIconColor(color: Resources.Colors.searchBarPlaceholderColor)
         searchBarController.searchBar.placeholderTextColor(color: Resources.Colors.searchBarPlaceholderColor)
         return searchBarController
@@ -90,8 +91,9 @@ final class TrackersViewController: UIViewController {
     }()
     
     private var currentDate = Date()
-    private var categories: [TrackerCategory] = testCategories // []
-    private var completedTrackers: [TrackerRecord] = testCompletedTrackers // []
+    private var categories: [TrackerCategory] = testCategories // [] testCategories
+    private var filteredCategories: [TrackerCategory] = testCategories // [] testCategories
+    private var completedTrackers: [TrackerRecord] = testCompletedTrackers // [] testCompletedTrackers
     private let collectionParams = GeometricParams(cellCount: 2, leftInset: 0, rightInset: 0, cellSpacing: 9)
 
     
@@ -105,41 +107,25 @@ final class TrackersViewController: UIViewController {
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: datePicker)
         navigationItem.searchController = searchBarController
         
-        if isNoTrackers() {
-            // если нет трекеров, то показываем плейсхолдер
-            view.addSubview(emptyTrackersImageView)
-            view.addSubview(emptyTrackersTextLabel)
-            
-            NSLayoutConstraint.activate([
-                emptyTrackersImageView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
-                emptyTrackersImageView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: 35),
-                emptyTrackersImageView.widthAnchor.constraint(equalToConstant: 80),
-                emptyTrackersImageView.heightAnchor.constraint(equalToConstant: 80),
-                
-                emptyTrackersTextLabel.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
-                emptyTrackersTextLabel.topAnchor.constraint(equalTo: emptyTrackersImageView.bottomAnchor, constant: 8),
-            ])
-        } else {
-            // если трекеры есть, то показываем их
-            mainStackView.addArrangedSubview(trackersCollection)
-            scrollView.addSubview(mainStackView)
-            view.addSubview(scrollView)
+        mainStackView.addArrangedSubview(trackersCollection)
+        scrollView.addSubview(mainStackView)
+        view.addSubview(scrollView)
+        
+        NSLayoutConstraint.activate([
+            scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
+            scrollView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
 
-            NSLayoutConstraint.activate([
-                scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-                scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-                scrollView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
-                scrollView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
-                
-                mainStackView.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor),
-                mainStackView.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor),
-                mainStackView.leadingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.leadingAnchor),
-                mainStackView.trailingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.trailingAnchor),
-                mainStackView.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor),
-                
-                trackersCollection.heightAnchor.constraint(equalTo: scrollView.frameLayoutGuide.heightAnchor),
-            ])
-        }
+            mainStackView.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor),
+            mainStackView.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor),
+            mainStackView.leadingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.leadingAnchor),
+            mainStackView.trailingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.trailingAnchor),
+            mainStackView.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor),
+
+            trackersCollection.heightAnchor.constraint(equalTo: scrollView.frameLayoutGuide.heightAnchor),
+        ])
+
         
         TrackerDatePickerObserver = NotificationCenter.default
             .addObserver(
@@ -153,7 +139,7 @@ final class TrackersViewController: UIViewController {
     }
         // проверяет, есть ли вообще трекеры
         private func isNoTrackers() -> Bool {
-            let trackersCount = categories.reduce(0) { $0 + $1.trackers.count }
+            let trackersCount = filteredCategories.reduce(0) { $0 + $1.trackers.count }
             return trackersCount == 0
         }
     
@@ -164,7 +150,7 @@ final class TrackersViewController: UIViewController {
     
         // возвращает строку с кол-вом дней, в который трекер выполнялся
         private func getTrackerDaysLabelText(_ indexPath: IndexPath) -> String {
-            let tracker = categories[indexPath.section].trackers[indexPath.row]
+            let tracker = filteredCategories[indexPath.section].trackers[indexPath.row]
             let days = completedTrackers.filter({$0.trackerID == tracker.id}).count
     
             if days % 10 == 1 && days % 100 != 11 {
@@ -184,6 +170,8 @@ final class TrackersViewController: UIViewController {
             } else {
                 categories.insert(TrackerCategory(title: categoryName, trackers: [tracker]), at: 0)
             }
+            filteredCategories = categories
+            searchBarController.searchBar.text = ""
             trackersCollection.reloadData()
         }
             
@@ -215,18 +203,28 @@ extension TrackersViewController: UICollectionViewDataSource, UICollectionViewDe
 
     // количество категорий
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        categories.count
+        if (filteredCategories.count == 0) {
+            if (categories.count == 0) {
+                trackersCollection.setEmptyTrackers()
+            } else {
+                trackersCollection.setNoTrackersFound()
+            }
+        } else {
+            trackersCollection.restore()
+        }
+        
+        return filteredCategories.count
     }
 
     // количество ячеек в каждой категории
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        categories[section].trackers.count
+        filteredCategories[section].trackers.count
     }
     
     // настройка ячейки
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TrackerCollectionCell.identifier, for: indexPath) as! TrackerCollectionCell
-        let tracker = categories[indexPath.section].trackers[indexPath.row]
+        let tracker = filteredCategories[indexPath.section].trackers[indexPath.row]
         cell.textLabel.text = tracker.name
         cell.infoLabel.text = getTrackerDaysLabelText(indexPath)
         cell.cardView.backgroundColor = tracker.color
@@ -279,7 +277,7 @@ extension TrackersViewController: UICollectionViewDataSource, UICollectionViewDe
 
         let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: id, for: indexPath) as! SupplementaryView
         // текст заголовка
-        view.titleLabel.text = categories[indexPath.section].title
+        view.titleLabel.text = filteredCategories[indexPath.section].title
         view.titleLabel.font = .systemFont(ofSize: 19, weight: .bold)
         return view
     }
@@ -294,5 +292,33 @@ extension TrackersViewController: UICollectionViewDataSource, UICollectionViewDe
                                                          height: UIView.layoutFittingExpandedSize.height),
                                                   withHorizontalFittingPriority: .required,
                                                   verticalFittingPriority: .fittingSizeLevel)
+    }
+}
+
+extension TrackersViewController: UISearchBarDelegate {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchText.isEmpty {
+            filteredCategories = categories
+            trackersCollection.reloadData()
+            return
+        }
+        
+        filteredCategories = categories.compactMap { category in
+            let filteredTrackers = category.trackers.filter { tracker in
+                tracker.name.lowercased().contains(searchText.lowercased())
+            }
+            if filteredTrackers.isEmpty {
+                return nil
+            } else {
+                return TrackerCategory(title: category.title, trackers: filteredTrackers)
+            }
+        }
+
+        trackersCollection.reloadData()
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        filteredCategories = categories
+        trackersCollection.reloadData()
     }
 }
