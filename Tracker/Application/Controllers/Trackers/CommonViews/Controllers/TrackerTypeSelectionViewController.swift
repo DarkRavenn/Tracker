@@ -13,7 +13,8 @@ struct tableOption {
     let vc: UIViewController.Type
 }
 
-final class CreateTrackerViewController: UIViewController {
+// экран создания нового трекера
+final class TrackerTypeSelectionViewController: UIViewController {
     
     private let onCreateTracker: (Tracker, String) -> Void
     private let isRegular: Bool
@@ -138,8 +139,8 @@ final class CreateTrackerViewController: UIViewController {
         buttonsStackView.distribution = .fillEqually
         mainStackView.addArrangedSubview(buttonsStackView)
         
-        scrollView.addSubview(mainStackView) // добавляем на экран скролл вью
-        view.addSubview(scrollView)          // в скролл вью добавляем стек со всеми элементами
+        scrollView.addSubview(mainStackView)
+        view.addSubview(scrollView)
         
         NSLayoutConstraint.activate([
             scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
@@ -154,7 +155,7 @@ final class CreateTrackerViewController: UIViewController {
             mainStackView.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor),
             
             nameTextField.heightAnchor.constraint(equalToConstant: 75),
-            tableView.heightAnchor.constraint(equalToConstant: 160),
+            tableView.heightAnchor.constraint(equalToConstant: self.isRegular ? 151 : 76),
             buttonsStackView.heightAnchor.constraint(equalToConstant: 60),
         ])
         
@@ -226,7 +227,7 @@ final class CreateTrackerViewController: UIViewController {
 }
 
 // TableViewDataSource Protocol
-extension CreateTrackerViewController: UITableViewDataSource {
+extension TrackerTypeSelectionViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.tableOptions.count
     }
@@ -240,7 +241,7 @@ extension CreateTrackerViewController: UITableViewDataSource {
 }
 
 // TableViewDelegate Protocol
-extension CreateTrackerViewController: UITableViewDelegate {
+extension TrackerTypeSelectionViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let selected = self.tableOptions[indexPath.row].title
         if selected == "Категория" {

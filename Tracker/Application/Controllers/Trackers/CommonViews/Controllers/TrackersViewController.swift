@@ -7,27 +7,28 @@
 
 import UIKit
 
-var testCategories: [TrackerCategory] = [
-    TrackerCategory(title: "Домашний уют", trackers: [
-        Tracker(id: "0", name: "Поливать растения", color: .ypColorSelection5, emoji: "❤️", schedule: [.tuesday, .thursday, .saturday])
-    ]),
-    TrackerCategory(title: "Радостные мелочи", trackers: [
-        Tracker(id: "1", name: "Кошка заслонила камеру на созвоне", color: .ypColorSelection2, emoji: "😻", schedule: [.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday]),
-        Tracker(id: "2", name: "Бабушка прислала открытку в вотсапе", color: .ypColorSelection1, emoji: "🌺", schedule: [.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday]),
-        Tracker(id: "3", name: "Свидания в апреле", color: .ypColorSelection14, emoji: "❤️", schedule: [.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday])
-    ]),
-    TrackerCategory(title: "Самочувствие", trackers: [
-        Tracker(id: "4", name: "Хорошее настроение", color: .ypColorSelection16, emoji: "🙂", schedule: [.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday]),
-        Tracker(id: "5", name: "Легкая тревожность", color: .ypColorSelection8, emoji: "😪", schedule: [.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday])
-    ]),
-]
+//var testCategories: [TrackerCategory] = [
+//    TrackerCategory(title: "Домашний уют", trackers: [
+//        Tracker(id: "0", name: "Поливать растения", color: .ypColorSelection5, emoji: "❤️", schedule: [.tuesday, .thursday, .saturday])
+//    ]),
+//    TrackerCategory(title: "Радостные мелочи", trackers: [
+//        Tracker(id: "1", name: "Кошка заслонила камеру на созвоне", color: .ypColorSelection2, emoji: "😻", schedule: [.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday]),
+//        Tracker(id: "2", name: "Бабушка прислала открытку в вотсапе", color: .ypColorSelection1, emoji: "🌺", schedule: [.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday]),
+//        Tracker(id: "3", name: "Свидания в апреле", color: .ypColorSelection14, emoji: "❤️", schedule: [.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday])
+//    ]),
+//    TrackerCategory(title: "Самочувствие", trackers: [
+//        Tracker(id: "4", name: "Хорошее настроение", color: .ypColorSelection16, emoji: "🙂", schedule: [.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday]),
+//        Tracker(id: "5", name: "Легкая тревожность", color: .ypColorSelection8, emoji: "😪", schedule: [.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday])
+//    ]),
+//]
+//
+//var testCompletedTrackers: [TrackerRecord] = [
+//    TrackerRecord(trackerID: "0", date: Date()),
+//    TrackerRecord(trackerID: "1", date: Date()),
+//    TrackerRecord(trackerID: "1", date: Calendar.current.date(byAdding: .day, value: -1, to: Date())!),
+//]
 
-var testCompletedTrackers: [TrackerRecord] = [
-    TrackerRecord(trackerID: "0", date: Date()),
-    TrackerRecord(trackerID: "1", date: Date()),
-    TrackerRecord(trackerID: "1", date: Calendar.current.date(byAdding: .day, value: -1, to: Date())!),
-]
-
+// экран с коллекцией трекеров
 final class TrackersViewController: UIViewController {
     
     private let datePicker = CustomDatePicker()
@@ -91,10 +92,10 @@ final class TrackersViewController: UIViewController {
     }()
     
     private var currentDate = Date()
-    private var categories: [TrackerCategory] = testCategories // [] testCategories
-    private var categoriesFilteredBySearch: [TrackerCategory] = testCategories // [] testCategories
-    private var categoriesFilteredByDate: [TrackerCategory] = testCategories // [] testCategories
-    private var completedTrackers: [TrackerRecord] = testCompletedTrackers // [] testCompletedTrackers
+    private var categories: [TrackerCategory] = [] // [] testCategories
+    private var categoriesFilteredBySearch: [TrackerCategory] = [] // [] testCategories
+    private var categoriesFilteredByDate: [TrackerCategory] = [] // [] testCategories
+    private var completedTrackers: [TrackerRecord] = [] // [] testCompletedTrackers
     private let collectionParams = GeometricParams(cellCount: 2, leftInset: 0, rightInset: 0, cellSpacing: 9)
 
     
@@ -239,7 +240,7 @@ final class TrackersViewController: UIViewController {
     // обновление текущей даты
     private func dateChanged() {
         currentDate = datePicker.datePicker.date
-        trackersCollection.reloadData()
+        filterTrackersByCurrentDate()
     }
 
     // добавление нового трекера
@@ -255,12 +256,12 @@ extension TrackersViewController: UICollectionViewDataSource, UICollectionViewDe
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         if (categoriesFilteredBySearch.count == 0) {
             if (categories.count == 0) {
-                trackersCollection.setEmptyTrackers()
+                setBGViewToCollection(trackersCollection, imageName: "trackers-placeholder", text: "Что будем отслеживать?")
             } else {
-                trackersCollection.setNoTrackersFound()
+                setBGViewToCollection(trackersCollection, imageName: "no-trackers-found", text: "Ничего не найдено")
             }
         } else {
-            trackersCollection.restore()
+            trackersCollection.backgroundView = nil
         }
         
         return categoriesFilteredBySearch.count
@@ -347,6 +348,7 @@ extension TrackersViewController: UICollectionViewDataSource, UICollectionViewDe
     }
 }
 
+// для управления SearchBar'ом
 extension TrackersViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if searchText.isEmpty {
@@ -372,5 +374,38 @@ extension TrackersViewController: UISearchBarDelegate {
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         categoriesFilteredBySearch = categoriesFilteredByDate
         trackersCollection.reloadData()
+    }
+}
+
+// для настройки плейсхолдеров коллекции трекеров
+extension TrackersViewController {
+
+    func setBGViewToCollection(_ collectionView: UICollectionView, imageName: String, text: String) {
+        let view = UIView(frame: CGRect(x: 0, y: 0, width: collectionView.bounds.size.width, height: collectionView.bounds.size.height))
+        
+        let imageView = UIImageView()
+        imageView.image = UIImage(named: imageName)
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+
+        let label = UILabel()
+        label.text = text
+        label.font = UIFont.systemFont(ofSize: 12)
+        label.textColor = .ypBlack
+        label.translatesAutoresizingMaskIntoConstraints = false
+        
+        view.addSubview(imageView)
+        view.addSubview(label)
+        
+        NSLayoutConstraint.activate([
+            imageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            imageView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            imageView.widthAnchor.constraint(equalToConstant: 80),
+            imageView.heightAnchor.constraint(equalToConstant: 80),
+            
+            label.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            label.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 8),
+        ])
+        
+        collectionView.backgroundView = view;
     }
 }
