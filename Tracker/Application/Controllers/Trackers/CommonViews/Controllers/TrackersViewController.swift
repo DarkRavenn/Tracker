@@ -9,28 +9,28 @@ import UIKit
 
 var testCategories: [TrackerCategory] = [
     TrackerCategory(title: "Домашний уют", trackers: [
-        Tracker(id: 0, name: "Поливать растения", color: .ypColorSelection5, emoji: "❤️", schedule: [.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday])
+        Tracker(id: "0", name: "Поливать растения", color: .ypColorSelection5, emoji: "❤️", schedule: [.tuesday, .thursday, .saturday])
     ]),
     TrackerCategory(title: "Радостные мелочи", trackers: [
-        Tracker(id: 1, name: "Кошка заслонила камеру на созвоне", color: .ypColorSelection2, emoji: "😻", schedule: [.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday]),
-        Tracker(id: 2, name: "Бабушка прислала открытку в вотсапе", color: .ypColorSelection1, emoji: "🌺", schedule: [.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday]),
-        Tracker(id: 3, name: "Свидания в апреле", color: .ypColorSelection14, emoji: "❤️", schedule: [.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday])
+        Tracker(id: "1", name: "Кошка заслонила камеру на созвоне", color: .ypColorSelection2, emoji: "😻", schedule: [.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday]),
+        Tracker(id: "2", name: "Бабушка прислала открытку в вотсапе", color: .ypColorSelection1, emoji: "🌺", schedule: [.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday]),
+        Tracker(id: "3", name: "Свидания в апреле", color: .ypColorSelection14, emoji: "❤️", schedule: [.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday])
     ]),
     TrackerCategory(title: "Самочувствие", trackers: [
-        Tracker(id: 4, name: "Хорошее настроение", color: .ypColorSelection16, emoji: "🙂", schedule: [.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday]),
-        Tracker(id: 5, name: "Легкая тревожность", color: .ypColorSelection8, emoji: "😪", schedule: [.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday])
+        Tracker(id: "4", name: "Хорошее настроение", color: .ypColorSelection16, emoji: "🙂", schedule: [.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday]),
+        Tracker(id: "5", name: "Легкая тревожность", color: .ypColorSelection8, emoji: "😪", schedule: [.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday])
     ]),
 ]
 
 var testCompletedTrackers: [TrackerRecord] = [
-    TrackerRecord(trackerID: 0, date: Date()),
-    TrackerRecord(trackerID: 1, date: Date()),
-    TrackerRecord(trackerID: 1, date: Calendar.current.date(byAdding: .day, value: -1, to: Date())!),
+    TrackerRecord(trackerID: "0", date: Date()),
+    TrackerRecord(trackerID: "1", date: Date()),
+    TrackerRecord(trackerID: "1", date: Calendar.current.date(byAdding: .day, value: -1, to: Date())!),
 ]
 
 final class TrackersViewController: UIViewController {
     
-    private let datePicker = TrackerDatePicker()
+    private let datePicker = CustomDatePicker()
     private var TrackerDatePickerObserver: NSObjectProtocol?
     
     private lazy var addButton: UIBarButtonItem = {
@@ -69,6 +69,7 @@ final class TrackersViewController: UIViewController {
             collection.dataSource = self
             collection.delegate = self
             collection.backgroundColor = .ypWhite
+            collection.showsVerticalScrollIndicator = false
             return collection
         }()
     
@@ -142,7 +143,7 @@ final class TrackersViewController: UIViewController {
         
         TrackerDatePickerObserver = NotificationCenter.default
             .addObserver(
-                forName: TrackerDatePicker.didChangeNotification,
+                forName: CustomDatePicker.didChangeNotification,
                 object: nil,
                 queue: .main
             ) { [weak self] _ in
@@ -157,7 +158,7 @@ final class TrackersViewController: UIViewController {
         }
     
         // проверяет, отмечен ли трекер как выполненный в текущую дату
-        private func isTrackerDone(_ trackerID: UInt) -> Bool {
+        private func isTrackerDone(_ trackerID: String) -> Bool {
             return completedTrackers.contains(where: { $0.trackerID == trackerID && Calendar.current.isDate($0.date, inSameDayAs: currentDate) })
         }
     
@@ -175,8 +176,19 @@ final class TrackersViewController: UIViewController {
             }
         }
     
+        // Добавляет новый трекер в коллекцию
+        private func addTracker(_ tracker: Tracker, categoryName: String) {
+            //  проверяем, есть ли категория в списке
+            if categories.contains(where: { $0.title == categoryName }) {
+                categories = categories.map { $0.title == categoryName ? TrackerCategory(title: $0.title, trackers: $0.trackers + [tracker]) : $0 }
+            } else {
+                categories.insert(TrackerCategory(title: categoryName, trackers: [tracker]), at: 0)
+            }
+            trackersCollection.reloadData()
+        }
+            
         // отмечает трекер как выполненный в текущую дату
-        @objc private func updateTrackersDoneStatus(_ trackerID: UInt, _ isAdding: Bool) {
+        @objc private func updateTrackersDoneStatus(_ trackerID: String, _ isAdding: Bool) {
             if isAdding {
                 completedTrackers.append(TrackerRecord(trackerID: trackerID, date: currentDate))
             } else {
@@ -194,6 +206,7 @@ final class TrackersViewController: UIViewController {
 
     // добавление нового трекера
     @objc private func addTapped() {
+        present(UINavigationController(rootViewController: ChooseCreateTrackerViewController(onAddTracker: addTracker)), animated: true, completion: nil)
     }
 }
 
@@ -219,7 +232,7 @@ extension TrackersViewController: UICollectionViewDataSource, UICollectionViewDe
         cell.cardView.backgroundColor = tracker.color
         cell.onUpdateTrackersDoneStatus = self.updateTrackersDoneStatus
         cell.emojiLabel.text = tracker.emoji
-        cell.addButton.tag = Int(tracker.id)
+        cell.addButton.accessibilityValue = tracker.id
 
         if isTrackerDone(tracker.id) {
             cell.addButton.backgroundColor = tracker.color.withAlphaComponent(0.5)

@@ -7,11 +7,11 @@
 
 import UIKit
 
-class TrackerCollectionCell: UICollectionViewCell {
+final class TrackerCollectionCell: UICollectionViewCell {
 
     static let identifier = "TrackerCell"
 
-    var onUpdateTrackersDoneStatus: ((UInt, Bool) -> Void)? = nil
+    var onUpdateTrackersDoneStatus: ((String, Bool) -> Void)? = nil
 
     lazy var cardView: UIView = {
         let view = UIView()
@@ -101,7 +101,7 @@ class TrackerCollectionCell: UICollectionViewCell {
 
     @objc private func onAddButtonTapped(_ button: UIButton) {
         button.isSelected.toggle()
-        self.onUpdateTrackersDoneStatus?(UInt(button.tag), button.isSelected)
+        self.onUpdateTrackersDoneStatus?(button.accessibilityValue ?? "", button.isSelected)
     }
 
 }

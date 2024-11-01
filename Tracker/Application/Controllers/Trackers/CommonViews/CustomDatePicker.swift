@@ -7,16 +7,16 @@
 
 import UIKit
 
-final class TrackerDatePicker: BaseView {
+final class CustomDatePicker: BaseView {
     
     let datePicker = UIDatePicker()
-    static let didChangeNotification = Notification.Name(rawValue: "TrackerDatePickerDidChange")
+    static let didChangeNotification = Notification.Name(rawValue: "CustomDatePickerDidChange")
     
     private let formatter = DateFormatter()
     private let datePickerText = UILabel()
 }
 
-extension TrackerDatePicker {
+extension CustomDatePicker {
     
     override func addViews() {
         super.addViews()
@@ -65,7 +65,7 @@ extension TrackerDatePicker {
         datePickerText.text = formatter.string(from: datePicker.date)
         
         NotificationCenter.default
-            .post(name: TrackerDatePicker.didChangeNotification,
+            .post(name: CustomDatePicker.didChangeNotification,
                   object: self,
                   userInfo: ["Date": datePicker.date])
     }
