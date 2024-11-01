@@ -16,6 +16,7 @@ struct tableOption {
 final class CreateTrackerViewController: UIViewController {
     
     private let onCreateTracker: (Tracker, String) -> Void
+    private let isRegular: Bool
 
     private var trackerName: String = ""
     private var category: TrackerCategory = TrackerCategory(title: "Новые", trackers: [])
@@ -26,6 +27,7 @@ final class CreateTrackerViewController: UIViewController {
     
     init(onCreateTracker: @escaping (Tracker, String) -> Void, isRegular: Bool) {
         self.onCreateTracker = onCreateTracker
+        self.isRegular = isRegular
         
         self.tableOptions.append(tableOption(title: "Категория", subtitle: category.title, vc: ChooseCreateTrackerViewController.self))
         if isRegular {
@@ -185,7 +187,7 @@ final class CreateTrackerViewController: UIViewController {
     
     // блокирует/разблокирует кнопку "Создать"
     private func updateCreateButtonState() {
-        createButtonView.isEnabled = !self.trackerName.isEmpty && !self.schedule.isEmpty
+        createButtonView.isEnabled = !self.trackerName.isEmpty && (!self.schedule.isEmpty || !isRegular)
     }
     
     @objc private func textFieldDidChange(_ textField: UITextField) {

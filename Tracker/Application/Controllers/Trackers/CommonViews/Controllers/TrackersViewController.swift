@@ -196,6 +196,12 @@ final class TrackersViewController: UIViewController {
         // возвращает строку с кол-вом дней, в который трекер выполнялся
         private func getTrackerDaysLabelText(_ indexPath: IndexPath) -> String {
             let tracker = categoriesFilteredBySearch[indexPath.section].trackers[indexPath.row]
+            
+            // для нерегулярных событий нет смысла считать дни
+            if tracker.schedule.isEmpty {
+                return ""
+            }
+            
             let days = completedTrackers.filter({$0.trackerID == tracker.id}).count
     
             if days % 10 == 1 && days % 100 != 11 {
