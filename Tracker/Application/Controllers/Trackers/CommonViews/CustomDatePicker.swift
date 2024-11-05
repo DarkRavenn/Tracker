@@ -7,27 +7,35 @@
 
 import UIKit
 
-final class CustomDatePicker: BaseView {
+final class CustomDatePicker: UIView {
     
     let datePicker = UIDatePicker()
     static let didChangeNotification = Notification.Name(rawValue: "CustomDatePickerDidChange")
     
     private let formatter = DateFormatter()
     private let datePickerText = UILabel()
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        
+        addViews()
+        layoutViews()
+        configure()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 }
 
 extension CustomDatePicker {
     
-    override func addViews() {
-        super.addViews()
-
+    private func addViews() {
         addView(datePicker)
         addView(datePickerText)
     }
-                
-    override func layoutViews() {
-        super.layoutViews()
-        
+    
+    private func layoutViews() {
         NSLayoutConstraint.activate([
             datePicker.leadingAnchor.constraint(equalTo: leadingAnchor),
             datePicker.topAnchor.constraint(equalTo: topAnchor),
@@ -42,9 +50,7 @@ extension CustomDatePicker {
         ])
     }
     
-    override func configure() {
-        super.configure()
-        
+    private func configure() {
         formatter.dateFormat = Resources.Common.dateFormat
         
         datePicker.datePickerMode = .date
@@ -60,8 +66,8 @@ extension CustomDatePicker {
         datePickerText.clipsToBounds = true
         datePickerText.font = .systemFont(ofSize: 17, weight: .regular)
     }
-
-    @objc func dateChanged() {
+    
+    @objc private func dateChanged() {
         datePickerText.text = formatter.string(from: datePicker.date)
         
         NotificationCenter.default

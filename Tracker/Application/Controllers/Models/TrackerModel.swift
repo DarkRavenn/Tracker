@@ -9,7 +9,7 @@ import UIKit
 
 // Структура для хранения информации о привычках
 struct Tracker {
-    let id: String
+    let id: UUID
     let name: String
     let color: UIColor
     let emoji: String

@@ -118,6 +118,8 @@ final class TrackerTypeSelectionViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.hideKeyboardWhenTappedAround()
+        
         self.title = "Новая привычка"
         navigationItem.hidesBackButton = true
         
@@ -158,11 +160,6 @@ final class TrackerTypeSelectionViewController: UIViewController {
             tableView.heightAnchor.constraint(equalToConstant: self.isRegular ? 151 : 76),
             buttonsStackView.heightAnchor.constraint(equalToConstant: 60),
         ])
-        
-        // жест для закрытия по двойному тапу за пределами клавиатуры
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapGestureDone))
-        tapGesture.numberOfTapsRequired = 2
-        self.view.addGestureRecognizer(tapGesture)
     }
     
     private func onUpdateSchedule(_ schedule: [Weekday]) {
@@ -213,7 +210,7 @@ final class TrackerTypeSelectionViewController: UIViewController {
     
     @objc func createButtonTapped() {
         self.onCreateTracker(
-            Tracker(id: UUID().uuidString, name: self.trackerName, color: self.trackerColor, emoji: self.trackerEmoji, schedule: self.schedule),
+            Tracker(id: UUID(), name: self.trackerName, color: self.trackerColor, emoji: self.trackerEmoji, schedule: self.schedule),
             self.category.title
         )
         
@@ -257,10 +254,6 @@ extension TrackerTypeSelectionViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 75
-    }
-    
-    @objc func tapGestureDone() {
-        view.endEditing(true)
     }
 }
 
