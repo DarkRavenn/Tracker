@@ -22,9 +22,9 @@
 		6D515B542CD4159A005D45AC /* TrackersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D515B532CD4159A005D45AC /* TrackersViewController.swift */; };
 		6D515B562CD415A9005D45AC /* StatisticsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D515B552CD415A9005D45AC /* StatisticsViewController.swift */; };
 		6D515B592CD415C6005D45AC /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D515B582CD415C6005D45AC /* TabBarViewController.swift */; };
-		6D83C60E2CDAC9540056945B /* UIViewController + ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D83C60D2CDAC9540056945B /* UIViewController + ext.swift */; };
-		6DDE9F0B2CD439AC00550301 /* SearchBar + ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DDE9F0A2CD439AC00550301 /* SearchBar + ext.swift */; };
-		6DDE9F0D2CD43E2300550301 /* UIView + ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DDE9F0C2CD43E2300550301 /* UIView + ext.swift */; };
+		6D83C60E2CDAC9540056945B /* UIViewController + Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D83C60D2CDAC9540056945B /* UIViewController + Ext.swift */; };
+		6DDE9F0B2CD439AC00550301 /* SearchBar + Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DDE9F0A2CD439AC00550301 /* SearchBar + Ext.swift */; };
+		6DDE9F0D2CD43E2300550301 /* UIView + Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DDE9F0C2CD43E2300550301 /* UIView + Ext.swift */; };
 		6DDE9F112CD43E9200550301 /* CustomDatePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DDE9F102CD43E9200550301 /* CustomDatePicker.swift */; };
 		6DDE9F242CD5673900550301 /* TrackerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DDE9F232CD5673900550301 /* TrackerModel.swift */; };
 		6DDE9F262CD5674700550301 /* TrackerCategoryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DDE9F252CD5674700550301 /* TrackerCategoryModel.swift */; };
@@ -52,9 +52,9 @@
 		6D515B532CD4159A005D45AC /* TrackersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackersViewController.swift; sourceTree = "<group>"; };
 		6D515B552CD415A9005D45AC /* StatisticsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsViewController.swift; sourceTree = "<group>"; };
 		6D515B582CD415C6005D45AC /* TabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
-		6D83C60D2CDAC9540056945B /* UIViewController + ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController + ext.swift"; sourceTree = "<group>"; };
-		6DDE9F0A2CD439AC00550301 /* SearchBar + ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SearchBar + ext.swift"; sourceTree = "<group>"; };
-		6DDE9F0C2CD43E2300550301 /* UIView + ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView + ext.swift"; sourceTree = "<group>"; };
+		6D83C60D2CDAC9540056945B /* UIViewController + Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController + Ext.swift"; sourceTree = "<group>"; };
+		6DDE9F0A2CD439AC00550301 /* SearchBar + Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SearchBar + Ext.swift"; sourceTree = "<group>"; };
+		6DDE9F0C2CD43E2300550301 /* UIView + Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView + Ext.swift"; sourceTree = "<group>"; };
 		6DDE9F102CD43E9200550301 /* CustomDatePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDatePicker.swift; sourceTree = "<group>"; };
 		6DDE9F232CD5673900550301 /* TrackerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerModel.swift; sourceTree = "<group>"; };
 		6DDE9F252CD5674700550301 /* TrackerCategoryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerCategoryModel.swift; sourceTree = "<group>"; };
@@ -153,9 +153,9 @@
 		6D515B4D2CD4148C005D45AC /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				6DDE9F0A2CD439AC00550301 /* SearchBar + ext.swift */,
-				6DDE9F0C2CD43E2300550301 /* UIView + ext.swift */,
-				6D83C60D2CDAC9540056945B /* UIViewController + ext.swift */,
+				6DDE9F0A2CD439AC00550301 /* SearchBar + Ext.swift */,
+				6DDE9F0C2CD43E2300550301 /* UIView + Ext.swift */,
+				6D83C60D2CDAC9540056945B /* UIViewController + Ext.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -294,11 +294,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				6D515B542CD4159A005D45AC /* TrackersViewController.swift in Sources */,
-				6DDE9F0B2CD439AC00550301 /* SearchBar + ext.swift in Sources */,
+				6DDE9F0B2CD439AC00550301 /* SearchBar + Ext.swift in Sources */,
 				6DDE9F2F2CD568C700550301 /* TrackersCollectionCell.swift in Sources */,
 				6D4835832CD5787600326832 /* TextField.swift in Sources */,
 				6D48358A2CD57A1200326832 /* TrackerTypeSelectionViewController.swift in Sources */,
-				6DDE9F0D2CD43E2300550301 /* UIView + ext.swift in Sources */,
+				6DDE9F0D2CD43E2300550301 /* UIView + Ext.swift in Sources */,
 				6D515B592CD415C6005D45AC /* TabBarViewController.swift in Sources */,
 				6DDE9F282CD5675500550301 /* TrackerRecordModel.swift in Sources */,
 				6DDE9F2A2CD5676400550301 /* GeometricParamsModel.swift in Sources */,
@@ -308,7 +308,7 @@
 				6D48357D2CD577FD00326832 /* SetScheduleViewController.swift in Sources */,
 				6DDE9F262CD5674700550301 /* TrackerCategoryModel.swift in Sources */,
 				6DDE9F242CD5673900550301 /* TrackerModel.swift in Sources */,
-				6D83C60E2CDAC9540056945B /* UIViewController + ext.swift in Sources */,
+				6D83C60E2CDAC9540056945B /* UIViewController + Ext.swift in Sources */,
 				6DDE9F2D2CD5678F00550301 /* SupplementaryView.swift in Sources */,
 				6DDE9F112CD43E9200550301 /* CustomDatePicker.swift in Sources */,
 				6D515B562CD415A9005D45AC /* StatisticsViewController.swift in Sources */,

@@ -102,9 +102,6 @@ final class TrackerCollectionCell: UICollectionViewCell {
 
     @objc private func onAddButtonTapped(_ button: UIButton) {
         button.isSelected.toggle()
-//        self.onUpdateTrackersDoneStatus?(button.accessibilityValue ?? "", button.isSelected)
         self.onUpdateTrackersDoneStatus?(UUID(uuidString: button.accessibilityValue ?? "")!, button.isSelected)
-        
     }
-
 }
