@@ -9,10 +9,10 @@ import UIKit
 
 // ячейка трекера
 final class TrackerCollectionCell: UICollectionViewCell {
-
+    
     static let identifier = "TrackerCell"
-
-    var onUpdateTrackersDoneStatus: ((UUID, Bool) -> Void)? = nil
+    
+    var onUpdateTrackersDoneStatus: (() -> Void)? = nil
 
     lazy var cardView: UIView = {
         let view = UIView()
@@ -25,7 +25,7 @@ final class TrackerCollectionCell: UICollectionViewCell {
         let label = UILabel()
         label.font = .systemFont(ofSize: 12)
         label.textAlignment = .center
-        label.backgroundColor = .ypSingleWhite.withAlphaComponent(0.3)
+        label.backgroundColor = .ypWhite.withAlphaComponent(0.3)
         label.layer.cornerRadius = 12
         label.clipsToBounds = true
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -36,7 +36,7 @@ final class TrackerCollectionCell: UICollectionViewCell {
         let label = UILabel()
         label.numberOfLines = 2
         label.font = .systemFont(ofSize: 12, weight: .medium)
-        label.textColor = .ypSingleWhite
+        label.textColor = .ypWhite
         label.textAlignment = .left
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -56,7 +56,6 @@ final class TrackerCollectionCell: UICollectionViewCell {
         button.setTitle("✓", for: .selected)
         button.layer.cornerRadius = 17
         button.addTarget(self, action: #selector(onAddButtonTapped), for: .touchUpInside)
-        button.setTitleColor(.ypWhite, for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -75,20 +74,20 @@ final class TrackerCollectionCell: UICollectionViewCell {
             cardView.leadingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leadingAnchor),
             cardView.trailingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.trailingAnchor),
             cardView.heightAnchor.constraint(equalToConstant: 90),
-
+            
             emojiLabel.topAnchor.constraint(equalTo: cardView.topAnchor, constant: 12),
             emojiLabel.leadingAnchor.constraint(equalTo: cardView.leadingAnchor, constant: 12),
             emojiLabel.widthAnchor.constraint(equalToConstant: 24),
             emojiLabel.heightAnchor.constraint(equalToConstant: 24),
-
+            
             textLabel.topAnchor.constraint(equalTo: emojiLabel.bottomAnchor, constant: 8),
             textLabel.leadingAnchor.constraint(equalTo: cardView.leadingAnchor, constant: 12),
             textLabel.trailingAnchor.constraint(equalTo: cardView.trailingAnchor, constant: -12),
             textLabel.bottomAnchor.constraint(equalTo: cardView.bottomAnchor, constant: -12),
-
+            
             infoLabel.topAnchor.constraint(equalTo: cardView.bottomAnchor, constant: 16),
             infoLabel.leadingAnchor.constraint(equalTo: cardView.leadingAnchor, constant: 12),
-
+            
             addButton.topAnchor.constraint(equalTo: cardView.bottomAnchor, constant: 8),
             addButton.trailingAnchor.constraint(equalTo: cardView.trailingAnchor, constant: -12),
             addButton.widthAnchor.constraint(equalToConstant: 34),
@@ -102,6 +101,6 @@ final class TrackerCollectionCell: UICollectionViewCell {
 
     @objc private func onAddButtonTapped(_ button: UIButton) {
         button.isSelected.toggle()
-        self.onUpdateTrackersDoneStatus?(UUID(uuidString: button.accessibilityValue ?? "")!, button.isSelected)
+        if let onUpdateTrackersDoneStatus { onUpdateTrackersDoneStatus() }
     }
 }

@@ -5,13 +5,8 @@
 //  Created by Aleksandr Dugaev on 24.01.2025.
 //
 
-import Foundation
+import UIKit
 import CoreData
-
-enum TrackerStoreError: Error {
-    case decodingErrorInvalidName
-    case decodingErrorInvalidEmoji
-}
 
 final class TrackerStore {
     private let context: NSManagedObjectContext
@@ -21,32 +16,76 @@ final class TrackerStore {
         self.context = context
     }
     
-    func fetchTracker() throws {
-        let fetchRequest = TrackerCoreData.fetchRequest()
-        let trackerFromCoreData = try context.fetch(fetchRequest)
-        try trackerFromCoreData.map { try self.tracker(from: $0) }
+    private func fetchRequest() -> NSFetchRequest<TrackerCoreData> {
+        return NSFetchRequest<TrackerCoreData>(entityName: "TrackerCoreData")
     }
     
-    func addNewTraker(_ tracker: Tracker) throws {
-        let trackerCoreData = TrackerCoreData(context: context)
-        trackerCoreData.name = tracker.name
-        trackerCoreData.emoji = tracker.emoji
-        trackerCoreData.color = uiColorMarshalling.hexString(from: tracker.color)
+    func addNewTracker(tracker: Tracker, categoryName: String) {
+        let fetchRequest = NSFetchRequest<TrackerCategoryCoreData>(entityName: "TrackerCategoryCoreData")
+        fetchRequest.predicate = NSPredicate(format: "title == %@", categoryName)
+        var categories: [TrackerCategoryCoreData] = []
+        do {
+            categories = try context.fetch(fetchRequest)
+        } catch {
+            print("Failed to request categories")
+        }
+        
+        let category: TrackerCategoryCoreData
+        if let existingCategory = categories.first {
+            category = existingCategory
+        } else {
+            category = TrackerCategoryCoreData(context: context)
+            category.title = categoryName
+        }
+        
+        let trackerForDB = TrackerCoreData(context: context)
+        trackerForDB.color = uiColorMarshalling.hexString(from: tracker.color)
+        trackerForDB.emoji = tracker.emoji
+        trackerForDB.schedule = ScheduleTransformer().toString(tracker.schedule)
+        trackerForDB.name = tracker.name
+        
+        trackerForDB.category = category
+        category.addToTrackers(trackerForDB)
         do {
             try context.save()
         } catch {
-            print("Ошибка при получении данных: \(error.localizedDescription)")
+            print("Failed to save changes to context")
         }
     }
     
-    func tracker(from trackerFromCoreData: TrackerCoreData) throws {
-        guard let name = trackerFromCoreData.name else {
-            throw TrackerStoreError.decodingErrorInvalidName
+    func createTracker(from TrackerCoreData: TrackerCoreData) -> Tracker? {
+        guard let trackerTitle = TrackerCoreData.name,
+              let trackerColorString = TrackerCoreData.color,
+              let trackerScheduleString = TrackerCoreData.schedule,
+              let trackerEmoji = TrackerCoreData.emoji
+        else {
+            return nil
         }
-        guard let emoji = trackerFromCoreData.emoji else {
-            throw TrackerStoreError.decodingErrorInvalidEmoji
+        
+        let trackerColor = uiColorMarshalling.color(from: trackerColorString)
+        let trackerSchedule = ScheduleTransformer().toWeekdays(trackerScheduleString)
+        
+        let tracker = Tracker(id: TrackerCoreData.objectID.uriRepresentation().absoluteString, name: trackerTitle, color: trackerColor, emoji: trackerEmoji, schedule: trackerSchedule)
+        return tracker
+    }
+    
+    func getTrackers() throws -> [Tracker] {
+        var trackersArray: [Tracker] = []
+        let request = fetchRequest()
+        let trackersFromDB = try context.fetch(request)
+        for i in trackersFromDB {
+            if let newTracker = createTracker(from: i) {
+                trackersArray.append(newTracker)
+            } else {
+                print("Failed to create tracker from TrackerCoreData")
+            }
         }
-        print("emoji: \(emoji) name: \(name)")
+        return trackersArray
+    }
+    
+    func getTrackersCD() throws -> [TrackerCoreData] {
+        let request = fetchRequest()
+        let trackersFromDB = try context.fetch(request)
+        return trackersFromDB
     }
 }
-

@@ -9,14 +9,14 @@ import UIKit
 
 // Структура для хранения информации о привычках
 struct Tracker {
-    let id: UUID
+    let id: String
     let name: String
     let color: UIColor
     let emoji: String
     let schedule: [Weekday]
 }
 
-enum Weekday: Int {
+enum Weekday: Int, Codable {
     case monday
     case tuesday
     case wednesday

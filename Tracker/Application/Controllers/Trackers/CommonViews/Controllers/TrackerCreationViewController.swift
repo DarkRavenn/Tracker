@@ -20,7 +20,6 @@ struct CollectionSectionsContent {
 
 // экран создания нового трекера
 final class TrackerCreationViewController: UIViewController {
-    private let dataProvider = DataProvider()
     private let onCreateTracker: (Tracker, String) -> Void
     private let isRegular: Bool
     
@@ -31,23 +30,24 @@ final class TrackerCreationViewController: UIViewController {
                                          "🥦", "🏓", "🥇", "🎸", "🏝️", "😪"]),
         .init(title: "Цвет", elements: (1...18).compactMap { UIColor(named: "ypColorSelection\($0)") })
     ]
-
+    
     private var trackerName: String = ""
     private var category: TrackerCategory = TrackerCategory(title: "Новые", trackers: [])
     private var schedule: [Weekday] = []
     private var selectedEmoji: IndexPath? = nil
     private var selectedColor: IndexPath? = nil
     private var tableOptions: [tableOption] = []
+    
     private let weekdaysText = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"]
     
     init(onCreateTracker: @escaping (Tracker, String) -> Void, isRegular: Bool) {
         self.onCreateTracker = onCreateTracker
         self.isRegular = isRegular
         
-        self.tableOptions.append(tableOption(title: "Категория", subtitle: category.title, vc: ChooseCreateTrackerViewController.self))
+        self.tableOptions.append(tableOption(title: "Категория", subtitle: category.title, vc: TrackerTypeSelectionViewController.self))
         if isRegular {
             // если событие регулярное (привычка), то добавляем в меню пункт "Расписание"
-            self.tableOptions.append(tableOption(title: "Расписание", vc: SetScheduleViewController.self))
+            self.tableOptions.append(tableOption(title: "Расписание", vc: ScheduleViewController.self))
         }
         
         super.init(nibName: nil, bundle: nil)
@@ -240,11 +240,9 @@ final class TrackerCreationViewController: UIViewController {
         else { return }
         
         self.onCreateTracker(
-            Tracker(id: UUID(), name: self.trackerName, color: trackerColor, emoji: trackerEmoji, schedule: self.schedule),
+            Tracker(id: "", name: self.trackerName, color: trackerColor, emoji: trackerEmoji, schedule: self.schedule),
             self.category.title
         )
-        
-        try? dataProvider.tracker.addNewTraker(Tracker(id: UUID(), name: self.trackerName, color: trackerColor, emoji: trackerEmoji, schedule: self.schedule))
         
         // возвращаемся на экран со списком трекеров
         if let viewControllers = navigationController?.viewControllers {
@@ -278,7 +276,7 @@ extension TrackerCreationViewController: UITableViewDelegate {
         } else if selected == "Расписание" {
             // переход в выбор расписания
             navigationController?.pushViewController(
-                SetScheduleViewController(schedule: self.schedule, updateSchedule: self.onUpdateSchedule),
+                ScheduleViewController(schedule: self.schedule, updateSchedule: self.onUpdateSchedule),
                 animated: true
             )
         }
@@ -405,5 +403,3 @@ extension TrackerCreationViewController: UICollectionViewDataSource, UICollectio
         self.updateCreateButtonState()
     }
 }
-
-

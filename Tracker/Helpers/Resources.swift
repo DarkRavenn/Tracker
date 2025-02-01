@@ -33,7 +33,8 @@ enum Resources {
         }
         
         enum Trackers {
-            static var emptyTrackersTextLabel = "Что будем отслеживать?"
+            static var trackersPlaceholder = "Что будем отслеживать?"
+            static var noTrackersFound = "Ничего не найдено"
         }
     }
     
@@ -44,7 +45,8 @@ enum Resources {
         }
         
         enum Trackers {
-            static var emptyTrackersPlaceholder = UIImage(named: "trackers-placeholder")
+            static var trackersPlaceholder = UIImage(named: "trackers-placeholder")!
+            static var noTrackersFound = UIImage(named: "no-trackers-found")!
         }
     }
 }
