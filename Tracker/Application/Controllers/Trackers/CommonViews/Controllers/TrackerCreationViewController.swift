@@ -20,7 +20,7 @@ struct CollectionSectionsContent {
 
 // экран создания нового трекера
 final class TrackerCreationViewController: UIViewController {
-    
+    private let dataProvider = DataProvider()
     private let onCreateTracker: (Tracker, String) -> Void
     private let isRegular: Bool
     
@@ -252,6 +252,8 @@ final class TrackerCreationViewController: UIViewController {
             Tracker(id: UUID(), name: self.trackerName, color: trackerColor, emoji: trackerEmoji, schedule: self.schedule),
             self.category.title
         )
+        
+        try? dataProvider.tracker.addNewTraker(Tracker(id: UUID(), name: self.trackerName, color: trackerColor, emoji: trackerEmoji, schedule: self.schedule))
         
         // возвращаемся на экран со списком трекеров
         if let viewControllers = navigationController?.viewControllers {

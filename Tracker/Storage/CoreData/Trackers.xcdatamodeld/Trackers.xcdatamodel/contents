@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22522" systemVersion="22G120" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithSwiftData="YES" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="23605" systemVersion="24A348" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithSwiftData="YES" userDefinedModelVersionIdentifier="">
     <entity name="TrackerCategoryCoreData" representedClassName="TrackerCategoryCoreData" syncable="YES" codeGenerationType="class">
         <attribute name="title" attributeType="String"/>
         <relationship name="trackers" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TrackerCoreData" inverseName="category" inverseEntity="TrackerCoreData"/>
     </entity>
     <entity name="TrackerCoreData" representedClassName="TrackerCoreData" syncable="YES" codeGenerationType="class">
-        <attribute name="color" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData"/>
+        <attribute name="color" attributeType="String" valueTransformerName="NSSecureUnarchiveFromData"/>
         <attribute name="emoji" attributeType="String"/>
         <attribute name="name" attributeType="String"/>
         <attribute name="schedule" optional="YES" attributeType="Transformable" valueTransformerName="DaysValueTransformer"/>

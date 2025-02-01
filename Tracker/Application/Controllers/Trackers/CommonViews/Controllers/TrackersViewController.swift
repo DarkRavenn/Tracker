@@ -9,7 +9,7 @@ import UIKit
 
 // экран с коллекцией трекеров
 final class TrackersViewController: UIViewController {
-    
+    private let dataProvider = DataProvider()
     private let datePicker = CustomDatePicker()
     private var TrackerDatePickerObserver: NSObjectProtocol?
     
@@ -117,6 +117,7 @@ final class TrackersViewController: UIViewController {
                 guard let self = self else { return }
                 self.dateChanged()
             }
+        try? dataProvider.tracker.fetchTracker()
     }
     
     // фильтрует трекеры по выбранной дате
@@ -273,7 +274,7 @@ extension TrackersViewController: UICollectionViewDataSource, UICollectionViewDe
         
         // скрываем "+" для будущих дат
         cell.addButton.isHidden = Calendar.current.compare(Date(), to: currentDate, toGranularity: .day) == .orderedAscending
-
+        
         
         return cell
     }

@@ -9,6 +9,9 @@ import Foundation
 import CoreData
 
 final class TrackerCategoryStore {
-    var context: NSManagedObjectContext!
+    private let context: NSManagedObjectContext
     
+    init(context: NSManagedObjectContext) {
+        self.context = context
+    }
 }
