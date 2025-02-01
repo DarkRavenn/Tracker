@@ -11,10 +11,10 @@
 		6116B3952D4E5FA9004624B5 /* TrackerRecordStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6116B38B2D4E5FA9004624B5 /* TrackerRecordStore.swift */; };
 		6116B3962D4E5FA9004624B5 /* TrackerStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6116B38C2D4E5FA9004624B5 /* TrackerStore.swift */; };
 		6116B3972D4E5FA9004624B5 /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6116B38E2D4E5FA9004624B5 /* CoreDataStack.swift */; };
-		6116B3982D4E5FA9004624B5 /* DaysValueTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6116B38F2D4E5FA9004624B5 /* DaysValueTransformer.swift */; };
 		6116B39A2D4E5FA9004624B5 /* Trackers.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 6116B3902D4E5FA9004624B5 /* Trackers.xcdatamodeld */; };
 		6116B39C2D4E60CC004624B5 /* DataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6116B39B2D4E60CC004624B5 /* DataProvider.swift */; };
 		61C52B322D4ECCC900EF3819 /* UIColorMarshalling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C52B312D4ECCC900EF3819 /* UIColorMarshalling.swift */; };
+		61C52B342D4ECF1600EF3819 /* ScheduleTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C52B332D4ECF1600EF3819 /* ScheduleTransformer.swift */; };
 		6D1161D22CA5D35000F61435 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D1161D12CA5D35000F61435 /* AppDelegate.swift */; };
 		6D1161D42CA5D35000F61435 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D1161D32CA5D35000F61435 /* SceneDelegate.swift */; };
 		6D1161DB2CA5D35200F61435 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6D1161DA2CA5D35200F61435 /* Assets.xcassets */; };
@@ -49,10 +49,10 @@
 		6116B38B2D4E5FA9004624B5 /* TrackerRecordStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerRecordStore.swift; sourceTree = "<group>"; };
 		6116B38C2D4E5FA9004624B5 /* TrackerStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerStore.swift; sourceTree = "<group>"; };
 		6116B38E2D4E5FA9004624B5 /* CoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
-		6116B38F2D4E5FA9004624B5 /* DaysValueTransformer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DaysValueTransformer.swift; sourceTree = "<group>"; };
 		6116B3932D4E5FA9004624B5 /* Trackers.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Trackers.xcdatamodel; sourceTree = "<group>"; };
 		6116B39B2D4E60CC004624B5 /* DataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataProvider.swift; sourceTree = "<group>"; };
 		61C52B312D4ECCC900EF3819 /* UIColorMarshalling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorMarshalling.swift; sourceTree = "<group>"; };
+		61C52B332D4ECF1600EF3819 /* ScheduleTransformer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleTransformer.swift; sourceTree = "<group>"; };
 		6D1161CE2CA5D35000F61435 /* Tracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6D1161D12CA5D35000F61435 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6D1161D32CA5D35000F61435 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -111,8 +111,8 @@
 				6116B38E2D4E5FA9004624B5 /* CoreDataStack.swift */,
 				6116B39B2D4E60CC004624B5 /* DataProvider.swift */,
 				6116B3902D4E5FA9004624B5 /* Trackers.xcdatamodeld */,
-				6116B38F2D4E5FA9004624B5 /* DaysValueTransformer.swift */,
 				61C52B312D4ECCC900EF3819 /* UIColorMarshalling.swift */,
+				61C52B332D4ECF1600EF3819 /* ScheduleTransformer.swift */,
 			);
 			path = CoreData;
 			sourceTree = "<group>";
@@ -367,6 +367,7 @@
 				6DDE9F2A2CD5676400550301 /* GeometricParamsModel.swift in Sources */,
 				6D1161D22CA5D35000F61435 /* AppDelegate.swift in Sources */,
 				6D1161D42CA5D35000F61435 /* SceneDelegate.swift in Sources */,
+				61C52B342D4ECF1600EF3819 /* ScheduleTransformer.swift in Sources */,
 				6D515B512CD414E8005D45AC /* Resources.swift in Sources */,
 				6D48357D2CD577FD00326832 /* SetScheduleViewController.swift in Sources */,
 				6DDE9F262CD5674700550301 /* TrackerCategoryModel.swift in Sources */,
@@ -383,7 +384,6 @@
 				61C52B322D4ECCC900EF3819 /* UIColorMarshalling.swift in Sources */,
 				6116B3962D4E5FA9004624B5 /* TrackerStore.swift in Sources */,
 				6116B3972D4E5FA9004624B5 /* CoreDataStack.swift in Sources */,
-				6116B3982D4E5FA9004624B5 /* DaysValueTransformer.swift in Sources */,
 				6D4835812CD5786500326832 /* CustonButton.swift in Sources */,
 				6D4835882CD57A0000326832 /* ChooseCreateTrackerViewController.swift in Sources */,
 				6D4835852CD5788C00326832 /* CustomTableCell.swift in Sources */,

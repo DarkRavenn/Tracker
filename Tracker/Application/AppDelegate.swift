@@ -12,9 +12,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
-        // регистрируем трансформер для хранения расписания в CoreData
-        DaysValueTransformer.register()
-        
         return true
     }
 }
