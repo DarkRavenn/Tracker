@@ -10,7 +10,7 @@ import CoreData
 
 final class TrackerStore {
     private let context: NSManagedObjectContext
-    private let uiColorMarshalling = UIColorMarshalling()
+    private let uiColorMarshalling = UIColorConvert()
     
     init(context: NSManagedObjectContext) {
         self.context = context
@@ -39,9 +39,9 @@ final class TrackerStore {
         }
         
         let trackerForDB = TrackerCoreData(context: context)
-        trackerForDB.color = uiColorMarshalling.hexString(from: tracker.color)
+        trackerForDB.color = uiColorMarshalling.toHexString(from: tracker.color)
         trackerForDB.emoji = tracker.emoji
-        trackerForDB.schedule = ScheduleTransformer().toString(tracker.schedule)
+        trackerForDB.schedule = ScheduleConvert().toString(tracker.schedule)
         trackerForDB.name = tracker.name
         
         trackerForDB.category = category
@@ -62,8 +62,8 @@ final class TrackerStore {
             return nil
         }
         
-        let trackerColor = uiColorMarshalling.color(from: trackerColorString)
-        let trackerSchedule = ScheduleTransformer().toWeekdays(trackerScheduleString)
+        let trackerColor = uiColorMarshalling.toColor(from: trackerColorString)
+        let trackerSchedule = ScheduleConvert().toWeekdays(trackerScheduleString)
         
         let tracker = Tracker(id: TrackerCoreData.objectID.uriRepresentation().absoluteString, name: trackerTitle, color: trackerColor, emoji: trackerEmoji, schedule: trackerSchedule)
         return tracker

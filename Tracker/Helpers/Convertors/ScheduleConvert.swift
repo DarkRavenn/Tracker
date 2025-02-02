@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class ScheduleTransformer {
+final class ScheduleConvert {
     func toString(_ schedule: [Weekday]) -> String {
         return schedule.map { String($0.rawValue) }.joined(separator: ", ")
     }
