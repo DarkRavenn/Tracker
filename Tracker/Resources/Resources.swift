@@ -36,6 +36,21 @@ enum Resources {
             static var trackersPlaceholder = "Что будем отслеживать?"
             static var noTrackersFound = "Ничего не найдено"
         }
+        
+        enum Onboarding {
+            enum BodyText {
+                static var pageOne = "Отслеживайте только то, что хотите"
+                static var pageTwo = "Даже если это не литры воды и йога"
+            }
+            
+            enum ButtonText {
+                static var pageOneOfPageTwo = "Вот это технологии!"
+            }
+        }
+        
+        enum UserDefaults {
+            static var isOnboardingViewed = "isOnboardingViewed"
+        }
     }
     
     enum Images {
@@ -47,6 +62,11 @@ enum Resources {
         enum Trackers {
             static var trackersPlaceholder = UIImage(named: "trackers-placeholder")!
             static var noTrackersFound = UIImage(named: "no-trackers-found")!
+        }
+        
+        enum Onboarding {
+            static var pageOne = UIImage(named: "onboarding_page_1")!
+            static var pageTwo = UIImage(named: "onboarding_page_2")!
         }
     }
 }

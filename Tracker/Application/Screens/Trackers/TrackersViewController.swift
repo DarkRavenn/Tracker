@@ -9,7 +9,6 @@ import UIKit
 
 // экран с коллекцией трекеров
 final class TrackersViewController: UIViewController {
-    private let datePicker = CustomDatePicker()
     private var TrackerDatePickerObserver: NSObjectProtocol?
     
     private lazy var addButton: UIBarButtonItem = {
@@ -18,15 +17,6 @@ final class TrackersViewController: UIViewController {
         return button
     }()
     
-//    private lazy var datePicker: UIDatePicker = {
-//        let datePicker = UIDatePicker()
-//        datePicker.datePickerMode = .date
-//        datePicker.preferredDatePickerStyle = .compact
-//        datePicker.locale = Locale(identifier: "ru_RU")
-//        datePicker.addTarget(self, action: #selector(dateChanged), for: .valueChanged)
-//        return datePicker
-//    }()
-//    
     private lazy var searchBarController: UISearchController = {
         let searchBarController = UISearchController(searchResultsController: nil)
         searchBarController.searchBar.placeholder = Resources.Strings.NavBar.searchBarPlaceholder
@@ -78,10 +68,6 @@ final class TrackersViewController: UIViewController {
         return label
     }()
     
-    private var currentDate = Date()
-    private var filterValue: String = ""
-    private let collectionParams = GeometricParams(cellCount: 2, leftInset: 0, rightInset: 0, cellSpacing: 9)
-    
     private lazy var dataProvider: DataProviderProtocol? = {
         do {
             try dataProvider = DataProvider(delegate: self)
@@ -91,6 +77,12 @@ final class TrackersViewController: UIViewController {
             return nil
         }
     }()
+    
+    private var currentDate = Date()
+    private var filterValue: String = ""
+    private let datePicker = CustomDatePicker()
+    private let userDefaults = UserDefaults.standard
+    private let collectionParams = GeometricParams(cellCount: 2, leftInset: 0, rightInset: 0, cellSpacing: 9)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -132,6 +124,8 @@ final class TrackersViewController: UIViewController {
                 guard let self = self else { return }
                 self.dateChanged()
             }
+        
+        openOnboardingScreen()
     }
     
     // проверяет, отмечен ли трекер как выполненный в текущую дату
@@ -172,6 +166,18 @@ final class TrackersViewController: UIViewController {
     func updateFilters() {
         dataProvider?.filterTrackers(date: currentDate, filter: filterValue)
         trackersCollection.reloadData()
+    }
+    
+    private func openOnboardingScreen() {
+        if userDefaults.bool(forKey: Resources.Strings.UserDefaults.isOnboardingViewed) {
+            print("Просмотр онбординга завершен")
+        } else {
+            print("Просмотр онбординга еще не завершен")
+            let controller = OnboardingPageViewController()
+            let navigationController = UINavigationController(rootViewController: controller)
+            navigationController.modalPresentationStyle = .fullScreen
+            self.navigationController?.present(navigationController, animated: true, completion: nil)
+        }
     }
     
     // обновление текущей даты
