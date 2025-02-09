@@ -8,7 +8,7 @@
 import UIKit
 
 // экран выбора создания привычки или нерегулярного события
-final class ChooseCreateTrackerViewController: UIViewController {
+final class TrackerTypeSelectionViewController: UIViewController {
     
     private let onAddTracker: (Tracker, String) -> Void
     
@@ -63,10 +63,10 @@ final class ChooseCreateTrackerViewController: UIViewController {
     }
     
     @objc private func opencCreateTrackerWithSchedule() {
-        navigationController?.pushViewController(TrackerTypeSelectionViewController(onCreateTracker: self.onAddTracker, isRegular: true), animated: true)
+        navigationController?.pushViewController(TrackerCreationViewController(onCreateTracker: self.onAddTracker, isRegular: true), animated: true)
     }
     
     @objc private func opencCreateTrackerWOSchedule() {
-        navigationController?.pushViewController(TrackerTypeSelectionViewController(onCreateTracker: self.onAddTracker, isRegular: false), animated: true)
+        navigationController?.pushViewController(TrackerCreationViewController(onCreateTracker: self.onAddTracker, isRegular: false), animated: true)
     }
 }

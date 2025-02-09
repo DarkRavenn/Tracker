@@ -1,0 +1,91 @@
+//
+//  TrackerStore.swift
+//  Tracker
+//
+//  Created by Aleksandr Dugaev on 24.01.2025.
+//
+
+import UIKit
+import CoreData
+
+final class TrackerStore {
+    private let context: NSManagedObjectContext
+    private let uiColorMarshalling = UIColorConvert()
+    
+    init(context: NSManagedObjectContext) {
+        self.context = context
+    }
+    
+    private func fetchRequest() -> NSFetchRequest<TrackerCoreData> {
+        return NSFetchRequest<TrackerCoreData>(entityName: "TrackerCoreData")
+    }
+    
+    func addNewTracker(tracker: Tracker, categoryName: String) {
+        let fetchRequest = NSFetchRequest<TrackerCategoryCoreData>(entityName: "TrackerCategoryCoreData")
+        fetchRequest.predicate = NSPredicate(format: "title == %@", categoryName)
+        var categories: [TrackerCategoryCoreData] = []
+        do {
+            categories = try context.fetch(fetchRequest)
+        } catch {
+            print("Failed to request categories")
+        }
+        
+        let category: TrackerCategoryCoreData
+        if let existingCategory = categories.first {
+            category = existingCategory
+        } else {
+            category = TrackerCategoryCoreData(context: context)
+            category.title = categoryName
+        }
+        
+        let trackerForDB = TrackerCoreData(context: context)
+        trackerForDB.color = uiColorMarshalling.toHexString(from: tracker.color)
+        trackerForDB.emoji = tracker.emoji
+        trackerForDB.schedule = ScheduleConvert().toString(tracker.schedule)
+        trackerForDB.name = tracker.name
+        
+        trackerForDB.category = category
+        category.addToTrackers(trackerForDB)
+        do {
+            try context.save()
+        } catch {
+            print("Failed to save changes to context")
+        }
+    }
+    
+    func createTracker(from TrackerCoreData: TrackerCoreData) -> Tracker? {
+        guard let trackerTitle = TrackerCoreData.name,
+              let trackerColorString = TrackerCoreData.color,
+              let trackerScheduleString = TrackerCoreData.schedule,
+              let trackerEmoji = TrackerCoreData.emoji
+        else {
+            return nil
+        }
+        
+        let trackerColor = uiColorMarshalling.toColor(from: trackerColorString)
+        let trackerSchedule = ScheduleConvert().toWeekdays(trackerScheduleString)
+        
+        let tracker = Tracker(id: TrackerCoreData.objectID.uriRepresentation().absoluteString, name: trackerTitle, color: trackerColor, emoji: trackerEmoji, schedule: trackerSchedule)
+        return tracker
+    }
+    
+    func getTrackers() throws -> [Tracker] {
+        var trackersArray: [Tracker] = []
+        let request = fetchRequest()
+        let trackersFromDB = try context.fetch(request)
+        for i in trackersFromDB {
+            if let newTracker = createTracker(from: i) {
+                trackersArray.append(newTracker)
+            } else {
+                print("Failed to create tracker from TrackerCoreData")
+            }
+        }
+        return trackersArray
+    }
+    
+    func getTrackersCD() throws -> [TrackerCoreData] {
+        let request = fetchRequest()
+        let trackersFromDB = try context.fetch(request)
+        return trackersFromDB
+    }
+}

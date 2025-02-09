@@ -31,18 +31,22 @@ final class ScheduleTableCell: UITableViewCell {
         super.layoutSubviews()
         
         // Скругляем углы ячейкам в зависимости от их позиции в таблице
-        if let indexPath = (superview as? UITableView)?.indexPath(for: self) {
-            if indexPath.row == 0 {
-                // первая ячейка
-                layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-            } else if indexPath.row == (superview as! UITableView).numberOfRows(inSection: indexPath.section) - 1 {
-                // последняя ячейка
-                layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
-                separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: CGFloat.greatestFiniteMagnitude)
-            } else {
-                // остальные ячейки
-                layer.maskedCorners = []
-            }
+        guard let tableView = superview as? UITableView,
+              let indexPath = tableView.indexPath(for: self) else { return }
+        
+        if indexPath.row == 0 {
+            // Первая строка (скругляем сверху)
+            layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        } else if indexPath.row == tableView.numberOfRows(inSection: indexPath.section) - 1 {
+            // Последняя строка (скругляем снизу)
+            layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
+            separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: CGFloat.greatestFiniteMagnitude)
+        } else {
+            // Строки в середине (без скруглений)
+            layer.maskedCorners = []
         }
     }
 }
+
+
+

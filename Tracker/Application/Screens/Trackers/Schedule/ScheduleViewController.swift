@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class SetScheduleViewController: UIViewController {
+final class ScheduleViewController: UIViewController {
     private var schedule: [Weekday]
     private let updateSchedule: ([Weekday]) -> Void
     private let tableOptions: [Weekday] = [.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday]
@@ -103,7 +103,7 @@ final class SetScheduleViewController: UIViewController {
         return switchView
     }
     
-    @objc func switchValueChanged(switchView: UISwitch) {
+    @objc private func switchValueChanged(switchView: UISwitch) {
         if switchView.isOn {
             // добавляем позицию в расписание
             if !schedule.contains(tableOptions[switchView.tag]) {
@@ -117,21 +117,21 @@ final class SetScheduleViewController: UIViewController {
         }
     }
     
-    @objc func doneButtonTapped() {
-        self.updateSchedule(self.schedule)
+    @objc private func doneButtonTapped() {
+        self.updateSchedule(self.schedule.sorted { $0.rawValue < $1.rawValue })
         navigationController?.popViewController(animated: true)
     }
 }
 
-// TableViewDataSource Protocol
-extension SetScheduleViewController: UITableViewDataSource {
+// MARK: TableViewDataSource Protocol
+extension ScheduleViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.tableOptions.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! ScheduleTableCell
-        cell.textLabel?.text = self.tableOptions[indexPath.row].rawValue
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as? ScheduleTableCell else { return UITableViewCell()}
+        cell.textLabel?.text = self.tableOptions[indexPath.row].fullName
         
         let switchView = createSwitchView(id: indexPath.row)
         cell.accessoryView = switchView
@@ -139,8 +139,8 @@ extension SetScheduleViewController: UITableViewDataSource {
     }
 }
 
-// TableViewDelegate Protocol
-extension SetScheduleViewController: UITableViewDelegate {
+// MARK: TableViewDelegate Protocol
+extension ScheduleViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         //
     }
