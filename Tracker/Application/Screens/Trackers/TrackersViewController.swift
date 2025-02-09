@@ -219,7 +219,7 @@ extension TrackersViewController: UICollectionViewDataSource, UICollectionViewDe
     // настройка ячейки
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let tracker = dataProvider?.object(at: indexPath) else { return UICollectionViewCell() }
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TrackerCollectionCell.identifier, for: indexPath) as! TrackerCollectionCell
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TrackerCollectionCell.identifier, for: indexPath) as? TrackerCollectionCell else { return UICollectionViewCell() }
         
         cell.emojiLabel.text = tracker.emoji
         cell.textLabel.text = tracker.name
@@ -283,7 +283,7 @@ extension TrackersViewController: UICollectionViewDataSource, UICollectionViewDe
             id = ""
         }
         
-        let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: id, for: indexPath) as! SupplementaryView
+        guard let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: id, for: indexPath) as? SupplementaryView else { return UICollectionReusableView() }
         // текст заголовка
         view.titleLabel.text = "Новые" // TODO:
         view.titleLabel.font = .systemFont(ofSize: 19, weight: .bold)

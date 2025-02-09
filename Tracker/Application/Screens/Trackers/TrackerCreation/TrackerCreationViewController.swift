@@ -38,7 +38,7 @@ final class TrackerCreationViewController: UIViewController {
     private var selectedColor: IndexPath? = nil
     private var tableOptions: [tableOption] = []
     
-    private let weekdaysText = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"]
+    private let weekdaysText: [Weekday] = [.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday]
     
     init(onCreateTracker: @escaping (Tracker, String) -> Void, isRegular: Bool) {
         self.onCreateTracker = onCreateTracker
@@ -199,7 +199,7 @@ final class TrackerCreationViewController: UIViewController {
         if schedule.count == 7 {
             self.tableOptions[1].subtitle = "Каждый день"
         } else {
-            self.tableOptions[1].subtitle = schedule.map { weekdaysText[$0.rawValue]}.joined(separator: ", ")
+            self.tableOptions[1].subtitle = schedule.map { weekdaysText[$0.rawValue].shortName}.joined(separator: ", ")
         }
         self.tableView.reloadData()
         self.updateCreateButtonState()
@@ -230,11 +230,11 @@ final class TrackerCreationViewController: UIViewController {
         self.updateCreateButtonState()
     }
     
-    @objc func cancelButtonTapped() {
+    @objc private func cancelButtonTapped() {
         navigationController?.popViewController(animated: true)
     }
     
-    @objc func createButtonTapped() {
+    @objc private func createButtonTapped() {
         guard let trackerEmoji = collectionContent.first(where: { $0.title == "Emoji" })?.elements[selectedEmoji?.row ?? 0] as? String,
               let trackerColor = collectionContent.first(where: { $0.title == "Цвет" })?.elements[selectedColor?.row ?? 0] as? UIColor
         else { return }
@@ -260,7 +260,7 @@ extension TrackerCreationViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! CustomTableCell
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as? CustomTableCell else { return UITableViewCell() }
         cell.textLabel?.text = self.tableOptions[indexPath.row].title
         cell.detailTextLabel?.text = self.tableOptions[indexPath.row].subtitle
         return cell
@@ -318,7 +318,6 @@ extension TrackerCreationViewController: UICollectionViewDataSource, UICollectio
             
             cell.prepareForReuse()
             
-            // задаём цвет
             guard let color = section.elements[indexPath.row] as? UIColor else { return cell }
             cell.setColor(color)
             
@@ -366,7 +365,7 @@ extension TrackerCreationViewController: UICollectionViewDataSource, UICollectio
             id = ""
         }
         
-        let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: id, for: indexPath) as! SupplementaryView
+        guard let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: id, for: indexPath) as? SupplementaryView else { return UICollectionReusableView()}
         // текст заголовка
         view.titleLabel.text = collectionContent[indexPath.section].title
         return view

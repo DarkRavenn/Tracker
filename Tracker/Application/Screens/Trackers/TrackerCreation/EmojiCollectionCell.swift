@@ -12,7 +12,7 @@ final class EmojiCollectionCell: UICollectionViewCell {
     // Идентификатор ячейки — используется для регистрации и восстановления:
     static let identifier = "EmojiCell"
     
-    let textLabel: UILabel = {
+    private let textLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 40)
         label.textColor = .label
