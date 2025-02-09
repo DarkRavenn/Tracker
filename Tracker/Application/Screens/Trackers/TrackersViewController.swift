@@ -291,7 +291,8 @@ extension TrackersViewController: UICollectionViewDataSource, UICollectionViewDe
         
         guard let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: id, for: indexPath) as? SupplementaryView else { return UICollectionReusableView() }
         // текст заголовка
-        view.titleLabel.text = "Новые" // TODO:
+        guard let tracker = dataProvider?.object(at: indexPath) else { return view }
+        view.titleLabel.text = tracker.category
         view.titleLabel.font = .systemFont(ofSize: 19, weight: .bold)
         return view
     }
@@ -324,7 +325,7 @@ extension TrackersViewController {
         let imageView = UIImageView()
         imageView.image = image
         imageView.translatesAutoresizingMaskIntoConstraints = false
-
+        
         let label = UILabel()
         label.text = text
         label.font = UIFont.systemFont(ofSize: 12)

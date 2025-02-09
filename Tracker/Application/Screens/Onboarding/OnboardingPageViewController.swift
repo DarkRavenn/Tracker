@@ -17,7 +17,7 @@ final class OnboardingPageViewController: UIPageViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    lazy var onboardingPages: [UIViewController] = {
+    lazy private var onboardingPages: [UIViewController] = {
         let page1 = OnboardingPageFactory.createOnboardingPage(
             bodyText: Resources.Strings.Onboarding.BodyText.pageOne,
             image: Resources.Images.Onboarding.pageOne,
@@ -37,7 +37,7 @@ final class OnboardingPageViewController: UIPageViewController {
         return [page1, page2]
     }()
     
-    lazy var pageControl: UIPageControl = {
+    lazy private var pageControl: UIPageControl = {
         let pageControl = UIPageControl()
         pageControl.numberOfPages = onboardingPages.count
         pageControl.currentPage = 0
