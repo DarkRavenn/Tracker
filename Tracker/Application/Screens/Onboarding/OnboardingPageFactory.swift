@@ -26,6 +26,7 @@ final class OnboardingPageFactory {
         // UIImageView
         let imageView = UIImageView()
         imageView.image = image
+        imageView.contentMode = .scaleAspectFill
         imageView.translatesAutoresizingMaskIntoConstraints = false
         
         // UIButton

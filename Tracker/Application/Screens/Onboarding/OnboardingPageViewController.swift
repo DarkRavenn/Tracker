@@ -9,14 +9,6 @@ import UIKit
 
 final class OnboardingPageViewController: UIPageViewController {
     
-    init() {
-        super.init(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
     lazy private var onboardingPages: [UIViewController] = {
         let page1 = OnboardingPageFactory.createOnboardingPage(
             bodyText: Resources.Strings.Onboarding.BodyText.pageOne,
@@ -83,10 +75,16 @@ final class OnboardingPageViewController: UIPageViewController {
     }
     
     private func closeOnboarding() {
-        // Закрытие  или завершение onboarding
-        print("Просмотр онборинга завершен")
-        userDefaults.set(true, forKey: Resources.Strings.UserDefaults.isOnboardingViewed)
-        dismiss(animated: true, completion: nil)
+        UserProperty.shared.hasSeenOnboarding = true
+        
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate,
+        let window = appDelegate.window else { return }
+        
+        UIView.transition(with: window, duration: 0.5, options: .transitionCrossDissolve, animations: {
+            window.rootViewController = TabBarViewController()
+        }, completion: nil)
+        
+        window.rootViewController = TabBarViewController()
     }
 }
 

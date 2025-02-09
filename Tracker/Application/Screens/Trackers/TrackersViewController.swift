@@ -124,8 +124,6 @@ final class TrackersViewController: UIViewController {
                 guard let self = self else { return }
                 self.dateChanged()
             }
-        
-        openOnboardingScreen()
     }
     
     // проверяет, отмечен ли трекер как выполненный в текущую дату
@@ -166,18 +164,6 @@ final class TrackersViewController: UIViewController {
     func updateFilters() {
         dataProvider?.filterTrackers(date: currentDate, filter: filterValue)
         trackersCollection.reloadData()
-    }
-    
-    private func openOnboardingScreen() {
-        if userDefaults.bool(forKey: Resources.Strings.UserDefaults.isOnboardingViewed) {
-            print("Просмотр онбординга завершен")
-        } else {
-            print("Просмотр онбординга еще не завершен")
-            let controller = OnboardingPageViewController()
-            let navigationController = UINavigationController(rootViewController: controller)
-            navigationController.modalPresentationStyle = .fullScreen
-            self.navigationController?.present(navigationController, animated: true, completion: nil)
-        }
     }
     
     // обновление текущей даты
