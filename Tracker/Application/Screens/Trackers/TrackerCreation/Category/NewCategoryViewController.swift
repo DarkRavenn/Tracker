@@ -28,7 +28,7 @@ final class NewCategoryViewController: UIViewController {
         textField.placeholder = "Введите название категории"
         textField.font = UIFont.systemFont(ofSize: 17)
         textField.layer.cornerRadius = 16
-        textField.backgroundColor = .ypLightGray
+        textField.backgroundColor = .ypBackground
         textField.clearButtonMode = .whileEditing
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
@@ -61,6 +61,8 @@ final class NewCategoryViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.hideKeyboardWhenTappedAround()
         
         self.title = "Новая категория"
         navigationItem.hidesBackButton = true
@@ -108,7 +110,7 @@ final class NewCategoryViewController: UIViewController {
         self.updateDoneButtonState()
     }
     
-    @objc func createButtonTapped() {
+    @objc private func createButtonTapped() {
         updateCategories(categoryName)
         // возвращаемся
         navigationController?.popViewController(animated: true)

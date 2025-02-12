@@ -190,6 +190,10 @@ extension TrackersViewController: UICollectionViewDataSource, UICollectionViewDe
                 setBGViewToCollection(trackersCollection,
                                       image: Resources.Images.Trackers.trackersPlaceholder,
                                       text: Resources.Strings.Trackers.trackersPlaceholder)
+            } else if Calendar.current.compare(Date(), to: currentDate, toGranularity: .day) == .orderedAscending {
+                setBGViewToCollection(trackersCollection,
+                                      image: Resources.Images.Trackers.trackersPlaceholder,
+                                      text: Resources.Strings.Trackers.trackersPlaceholder)
             } else {
                 setBGViewToCollection(trackersCollection,
                                       image: Resources.Images.Trackers.noTrackersFound,
@@ -198,7 +202,6 @@ extension TrackersViewController: UICollectionViewDataSource, UICollectionViewDe
         } else {
             trackersCollection.backgroundView = nil
         }
-        
         return sectionsCount
     }
     

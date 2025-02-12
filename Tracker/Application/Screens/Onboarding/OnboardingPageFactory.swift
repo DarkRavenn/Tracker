@@ -33,12 +33,10 @@ final class OnboardingPageFactory {
         let button: UIButton
         
         if #available(iOS 14.0, *) {
-            // Используется для iOS 14.0 и новее
             button = UIButton(primaryAction: UIAction { _ in
                 action() // Выполняем переданное замыкание
             })
         } else {
-            // Для старых версий iOS
             button = UIButton(type: .system)
             button.addTarget(closureWrapper(forAction: action), action: #selector(ClosureWrapper.executeAction), for: .touchUpInside)
         }
@@ -56,7 +54,6 @@ final class OnboardingPageFactory {
         customViewController.view.addSubview(button)
         customViewController.view.addSubview(label)
         
-        // Констрейнты
         NSLayoutConstraint.activate([
             imageView.topAnchor.constraint(equalTo: customViewController.view.topAnchor),
             imageView.leadingAnchor.constraint(equalTo: customViewController.view.leadingAnchor),

@@ -124,7 +124,10 @@ extension CategoryViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! CategoryTableCell
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as? CategoryTableCell else {
+                return UITableViewCell()
+            }
+        
         cell.textLabel?.text = vm.categories[indexPath.row]
         
         let accessoryView = UILabel(frame: CGRect(x: 0, y: 0, width: 20, height: 20))
@@ -132,6 +135,7 @@ extension CategoryViewController: UITableViewDataSource {
         accessoryView.text = vm.categories[indexPath.row] == selectedCategory ? "✓" : ""
         accessoryView.textColor = .ypBlue
         cell.accessoryView = accessoryView
+        cell.separatorInset = .zero
         
         return cell
     }
