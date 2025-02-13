@@ -116,4 +116,3 @@ final class NewCategoryViewController: UIViewController {
         navigationController?.popViewController(animated: true)
     }
 }
-

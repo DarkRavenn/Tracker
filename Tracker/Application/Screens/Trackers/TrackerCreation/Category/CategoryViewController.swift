@@ -125,17 +125,13 @@ extension CategoryViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as? CategoryTableCell else {
-                return UITableViewCell()
-            }
+            return UITableViewCell()
+        }
         
-        cell.textLabel?.text = vm.categories[indexPath.row]
-        
-        let accessoryView = UILabel(frame: CGRect(x: 0, y: 0, width: 20, height: 20))
-        accessoryView.font = .systemFont(ofSize: 20, weight: .medium)
-        accessoryView.text = vm.categories[indexPath.row] == selectedCategory ? "✓" : ""
-        accessoryView.textColor = .ypBlue
-        cell.accessoryView = accessoryView
-        cell.separatorInset = .zero
+        let category = vm.categories[indexPath.row]
+        cell.updateCategoryText(category)
+        cell.updateCategorySelection(isSelected: category == selectedCategory)
+        cell.updateSeparatorInset()
         
         return cell
     }
@@ -193,4 +189,3 @@ extension CategoryViewController: DataProviderDelegate {
         // stub
     }
 }
-

@@ -9,6 +9,16 @@ import UIKit
 
 final class CategoryTableCell: UITableViewCell {
     
+    private var categoryText: String?
+    private var isSelectedCategory: Bool = false
+    
+    private var accessoryViewLabel: UILabel = {
+        let label = UILabel(frame: CGRect(x: 0, y: 0, width: 20, height: 20))
+        label.font = .systemFont(ofSize: 20, weight: .medium)
+        label.textColor = .ypBlue
+        return label
+    }()
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
@@ -19,8 +29,9 @@ final class CategoryTableCell: UITableViewCell {
         
         translatesAutoresizingMaskIntoConstraints = false
         
-        separatorInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
         selectionStyle = .none
+        
+        contentView.addSubview(accessoryViewLabel)
     }
     
     required init?(coder: NSCoder) {
@@ -33,9 +44,9 @@ final class CategoryTableCell: UITableViewCell {
         // Скругляем углы ячейкам в зависимости от их позиции в таблице
         guard let tableView = superview as? UITableView,
               let indexPath = tableView.indexPath(for: self) else { return }
-
+        
         let numberOfRows = tableView.numberOfRows(inSection: indexPath.section)
-
+        
         if numberOfRows == 1 {
             // Если строка только одна (скругляем полностью)
             layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner, .layerMinXMaxYCorner, .layerMaxXMaxYCorner]
@@ -51,5 +62,19 @@ final class CategoryTableCell: UITableViewCell {
             // Строки в середине (без скруглений)
             layer.maskedCorners = []
         }
+    }
+    
+    func updateCategoryText(_ text: String) {
+        categoryText = text
+        textLabel?.text = text
+    }
+    
+    func updateCategorySelection(isSelected: Bool) {
+        isSelectedCategory = isSelected
+        accessoryViewLabel.text = isSelectedCategory ? "✓" : ""
+    }
+    
+    func updateSeparatorInset() {
+        separatorInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
     }
 }

@@ -46,4 +46,3 @@ extension CategoryViewModel: DataProviderDelegate {
         // stub
     }
 }
-
