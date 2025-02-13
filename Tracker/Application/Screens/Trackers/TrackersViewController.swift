@@ -9,7 +9,6 @@ import UIKit
 
 // экран с коллекцией трекеров
 final class TrackersViewController: UIViewController {
-    private let datePicker = CustomDatePicker()
     private var TrackerDatePickerObserver: NSObjectProtocol?
     
     private lazy var addButton: UIBarButtonItem = {
@@ -18,15 +17,6 @@ final class TrackersViewController: UIViewController {
         return button
     }()
     
-//    private lazy var datePicker: UIDatePicker = {
-//        let datePicker = UIDatePicker()
-//        datePicker.datePickerMode = .date
-//        datePicker.preferredDatePickerStyle = .compact
-//        datePicker.locale = Locale(identifier: "ru_RU")
-//        datePicker.addTarget(self, action: #selector(dateChanged), for: .valueChanged)
-//        return datePicker
-//    }()
-//    
     private lazy var searchBarController: UISearchController = {
         let searchBarController = UISearchController(searchResultsController: nil)
         searchBarController.searchBar.placeholder = Resources.Strings.NavBar.searchBarPlaceholder
@@ -78,10 +68,6 @@ final class TrackersViewController: UIViewController {
         return label
     }()
     
-    private var currentDate = Date()
-    private var filterValue: String = ""
-    private let collectionParams = GeometricParams(cellCount: 2, leftInset: 0, rightInset: 0, cellSpacing: 9)
-    
     private lazy var dataProvider: DataProviderProtocol? = {
         do {
             try dataProvider = DataProvider(delegate: self)
@@ -91,6 +77,12 @@ final class TrackersViewController: UIViewController {
             return nil
         }
     }()
+    
+    private var currentDate = Date()
+    private var filterValue: String = ""
+    private let datePicker = CustomDatePicker()
+    private let userDefaults = UserDefaults.standard
+    private let collectionParams = GeometricParams(cellCount: 2, leftInset: 0, rightInset: 0, cellSpacing: 9)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -192,21 +184,22 @@ extension TrackersViewController: UICollectionViewDataSource, UICollectionViewDe
     // количество категорий
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         let sectionsCount = dataProvider?.numberOfSections ?? 0
-        if (sectionsCount == 0) {
-            let totalTrackersCount = dataProvider?.getTrackers().count ?? 0
-            if (totalTrackersCount == 0) {
-                setBGViewToCollection(trackersCollection,
-                                      image: Resources.Images.Trackers.trackersPlaceholder,
-                                      text: Resources.Strings.Trackers.trackersPlaceholder)
-            } else {
+        let isSearching = !(searchBarController.searchBar.text?.isEmpty ?? true)
+        
+        if sectionsCount == 0 {
+            if isSearching {
                 setBGViewToCollection(trackersCollection,
                                       image: Resources.Images.Trackers.noTrackersFound,
                                       text: Resources.Strings.Trackers.noTrackersFound)
+            } else {
+                setBGViewToCollection(trackersCollection,
+                                      image: Resources.Images.Trackers.trackersPlaceholder,
+                                      text: Resources.Strings.Trackers.trackersPlaceholder)
             }
         } else {
             trackersCollection.backgroundView = nil
         }
-        
+
         return sectionsCount
     }
     
@@ -285,7 +278,8 @@ extension TrackersViewController: UICollectionViewDataSource, UICollectionViewDe
         
         guard let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: id, for: indexPath) as? SupplementaryView else { return UICollectionReusableView() }
         // текст заголовка
-        view.titleLabel.text = "Новые" // TODO:
+        guard let tracker = dataProvider?.object(at: indexPath) else { return view }
+        view.titleLabel.text = tracker.category
         view.titleLabel.font = .systemFont(ofSize: 19, weight: .bold)
         return view
     }
@@ -318,7 +312,7 @@ extension TrackersViewController {
         let imageView = UIImageView()
         imageView.image = image
         imageView.translatesAutoresizingMaskIntoConstraints = false
-
+        
         let label = UILabel()
         label.text = text
         label.font = UIFont.systemFont(ofSize: 12)

@@ -8,7 +8,7 @@
 import UIKit
 
 // костомный класс для кнопок, которые становятся серыми, когда выключены
-class CustomButton: UIButton {
+final class CustomButton: UIButton {
 
     enum ButtonState {
         case normal
