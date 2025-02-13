@@ -184,7 +184,6 @@ extension TrackersViewController: UICollectionViewDataSource, UICollectionViewDe
     // количество категорий
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         let sectionsCount = dataProvider?.numberOfSections ?? 0
-        _ = dataProvider?.getTrackers().count ?? 0
         let isSearching = !(searchBarController.searchBar.text?.isEmpty ?? true)
         
         if sectionsCount == 0 {
