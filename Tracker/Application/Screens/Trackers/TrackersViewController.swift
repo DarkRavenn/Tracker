@@ -184,24 +184,23 @@ extension TrackersViewController: UICollectionViewDataSource, UICollectionViewDe
     // количество категорий
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         let sectionsCount = dataProvider?.numberOfSections ?? 0
-        if (sectionsCount == 0) {
-            let totalTrackersCount = dataProvider?.getTrackers().count ?? 0
-            if (totalTrackersCount == 0) {
-                setBGViewToCollection(trackersCollection,
-                                      image: Resources.Images.Trackers.trackersPlaceholder,
-                                      text: Resources.Strings.Trackers.trackersPlaceholder)
-            } else if Calendar.current.compare(Date(), to: currentDate, toGranularity: .day) == .orderedAscending {
-                setBGViewToCollection(trackersCollection,
-                                      image: Resources.Images.Trackers.trackersPlaceholder,
-                                      text: Resources.Strings.Trackers.trackersPlaceholder)
-            } else {
+        _ = dataProvider?.getTrackers().count ?? 0
+        let isSearching = !(searchBarController.searchBar.text?.isEmpty ?? true)
+        
+        if sectionsCount == 0 {
+            if isSearching {
                 setBGViewToCollection(trackersCollection,
                                       image: Resources.Images.Trackers.noTrackersFound,
                                       text: Resources.Strings.Trackers.noTrackersFound)
+            } else {
+                setBGViewToCollection(trackersCollection,
+                                      image: Resources.Images.Trackers.trackersPlaceholder,
+                                      text: Resources.Strings.Trackers.trackersPlaceholder)
             }
         } else {
             trackersCollection.backgroundView = nil
         }
+
         return sectionsCount
     }
     
