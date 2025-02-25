@@ -36,7 +36,21 @@ enum Resources {
             static var emptyTrackers = NSLocalizedString("trackers.emptyTrackers", comment: "Что будем отслеживать?")
             static var noTrackersFound = NSLocalizedString("trackers.noTrackersFound", comment: "Ничего не найдено")
             static var daysTracked = NSLocalizedString("daysTracked", comment: "Number of days tracked")
+            
+            enum ContextMenu {
+                static var pin = NSLocalizedString("trackers.contextMenu.pin", comment: "Открепить")
+                static var edit = NSLocalizedString("trackers.contextMenu.edit", comment: "Редактировать")
+                static var unpin = NSLocalizedString("trackers.contextMenu.unpin", comment: "Закрепить")
+                static var remove = NSLocalizedString("trackers.contextMenu.remove", comment: "Удалить")
+                
+                enum RemoveModal {
+                    static var title = NSLocalizedString("trackers.contextMenu.remove.modal.title", comment: "Уверены, что хотите удалить трекер?")
+                    static var ok = NSLocalizedString("trackers.contextMenu.remove.modal.ok", comment: "Удалить")
+                    static var cancel = NSLocalizedString("trackers.contextMenu.remove.modal.cancel", comment: "Отменить")
+                }
+            }
         }
+//        Resources.Strings.Trackers.ContextMenu
         
         enum TrackerTypeSelection {
             static var title = NSLocalizedString("trackerTypeSelection.title", comment: "Создание трекера")

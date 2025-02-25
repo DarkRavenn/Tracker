@@ -346,16 +346,22 @@ extension TrackersViewController: UICollectionViewDelegate {
         guard let tracker = dataProvider?.object(at: indexPaths) else { return nil }
         let indexPathStr = NSString(string: "\(indexPaths.item), \(indexPaths.section)")
         
+        let pinActionTitle = tracker.isPinned
+        ? Resources.Strings.Trackers.ContextMenu.unpin
+        : Resources.Strings.Trackers.ContextMenu.pin
+        let editActionTitle = Resources.Strings.Trackers.ContextMenu.edit
+        let removeActionTitle = Resources.Strings.Trackers.ContextMenu.remove
+        
         return UIContextMenuConfiguration(identifier: indexPathStr, actionProvider: { actions in
             return UIMenu(children: [
-                UIAction(title: tracker.isPinned ? "Открепить" : "Закрепить") { [weak self] _ in
+                UIAction(title: pinActionTitle) { [weak self] _ in
                     self?.togglePinTracker(tracker)
                 },
-                UIAction(title: "Редактировать") { [weak self] _ in
+                UIAction(title: editActionTitle) { [weak self] _ in
                     self?.editTracker(tracker)
                 },
-                UIAction(title: "Удалить") { [weak self] _ in
-                    self?.deleteTracker(tracker)
+                UIAction(title: removeActionTitle, attributes: .destructive) { [weak self] _ in
+                    self?.removeTracker(tracker)
                 },
             ])
         })
@@ -379,7 +385,18 @@ extension TrackersViewController: UICollectionViewDelegate {
     func editTracker(_ tracker: Tracker) {
         print("Редактировать")
     }
-    func deleteTracker(_ tracker: Tracker) {
-        print("Удалить")
+    func removeTracker(_ tracker: Tracker) {
+        let modalTitleText = Resources.Strings.Trackers.ContextMenu.RemoveModal.title
+        let modalOkText = Resources.Strings.Trackers.ContextMenu.RemoveModal.ok
+        let modalCancelText = Resources.Strings.Trackers.ContextMenu.RemoveModal.cancel
+        
+        let alert = UIAlertController(title: modalTitleText, message: nil, preferredStyle: .actionSheet)
+        alert.addAction(UIAlertAction(title: modalOkText, style: .destructive, handler: { [weak self] _ in
+            self?.dataProvider?.removeTracker(tracker.id)
+        }))
+        alert.addAction(UIAlertAction(title: modalCancelText, style: .cancel, handler: { _ in }))
+        
+        self.present(alert, animated: true, completion: nil)
     }
 }
+
