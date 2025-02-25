@@ -24,6 +24,7 @@ protocol DataProviderProtocol {
     func addRecord(_ record: Tracker) throws
     
     func getTrackers() -> [Tracker]
+    func pinTracker(_ trackerID: String, setTo value: Bool)
     func filterTrackers(date: Date, filter: String)
     
     func addCategory(categoryTitle: String)
@@ -55,7 +56,7 @@ final class DataProvider: NSObject {
     private lazy var fetchedResultsController: NSFetchedResultsController<TrackerCoreData> = {
         
         let fetchRequest = NSFetchRequest<TrackerCoreData>(entityName: "TrackerCoreData")
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "isPinned", ascending: false)]
         
         let currentwWeekday = getCorrectWeekdayNum(from: Date())
         fetchRequest.predicate = NSPredicate(
@@ -65,7 +66,7 @@ final class DataProvider: NSObject {
         
         let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest,
                                                                   managedObjectContext: context,
-                                                                  sectionNameKeyPath: "category",
+                                                                  sectionNameKeyPath: "computedCategory",
                                                                   cacheName: nil)
         fetchedResultsController.delegate = self
         try? fetchedResultsController.performFetch()
@@ -119,8 +120,16 @@ extension DataProvider {
             let result = try trackerStore.getTrackers()
             return result
         } catch {
-            print("Failed to get Trackers: \(error)")
+            print("Failed to get trackers: \(error)")
             return []
+        }
+    }
+    
+    func pinTracker(_ trackerID: String, setTo value: Bool) {
+        do {
+            try trackerStore.pinTracker(trackerID, value: value)
+        } catch {
+            print("Failed to pin tracker: \(error)")
         }
     }
 }
@@ -189,7 +198,7 @@ extension DataProvider {
 // MARK: - DataProviderProtocol
 extension DataProvider: DataProviderProtocol {
     var numberOfSections: Int {
-        fetchedResultsController.sections?.count ?? 0
+        return fetchedResultsController.sections?.count ?? 0
     }
     
     func numberOfItemsInSection(_ section: Int) -> Int {
@@ -219,7 +228,7 @@ extension DataProvider: NSFetchedResultsControllerDelegate {
         delegate?.didUpdate(TrackerStoreUpdate(
             insertedIndexes: insertedIndexes,
             deletedIndexes: deletedIndexes
-            )
+        )
         )
         self.insertedIndexes = nil
         self.deletedIndexes = nil
