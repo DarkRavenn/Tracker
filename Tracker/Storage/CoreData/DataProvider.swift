@@ -36,6 +36,7 @@ protocol DataProviderProtocol {
     func removeTrackerRecord(trackerID: String, date: Date)
     func isTrackerCompleted(trackerID: String, date: Date) -> Bool
     func getTrackerRecords(by trackerID: String) -> [TrackerRecord]
+    func getAllTrackersRecordsCount() -> Int
 }
 
 // MARK: - DataProvider
@@ -198,6 +199,16 @@ extension DataProvider {
             return []
         }
     }
+    
+    func getAllTrackersRecordsCount() -> Int {
+        do {
+            let result = try trackerRecordStore.getAllTrackersRecordsCount()
+            return result
+        } catch {
+            print("Failed to get trackers: \(error)")
+            return 0
+        }
+    }
 }
 
 // для работы с TrackerCategory
@@ -255,8 +266,7 @@ extension DataProvider: NSFetchedResultsControllerDelegate {
         delegate?.didUpdate(TrackerStoreUpdate(
             insertedIndexes: insertedIndexes,
             deletedIndexes: deletedIndexes
-        )
-        )
+        ))
         self.insertedIndexes = nil
         self.deletedIndexes = nil
     }
