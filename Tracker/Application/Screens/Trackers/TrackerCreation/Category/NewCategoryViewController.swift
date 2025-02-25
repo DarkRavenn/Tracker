@@ -25,7 +25,7 @@ final class NewCategoryViewController: UIViewController {
     
     private lazy var nameTextField: UITextField = {
         let textField = TextFieldWithPadding()
-        textField.placeholder = "Введите название категории"
+        textField.placeholder = Resources.Strings.NewCategory.nameTextField.placeholder
         textField.font = UIFont.systemFont(ofSize: 17)
         textField.layer.cornerRadius = 16
         textField.backgroundColor = .ypBackground
@@ -37,7 +37,7 @@ final class NewCategoryViewController: UIViewController {
     
     private lazy var longNameWarningLabel: UILabel = {
         let label = UILabel()
-        label.text = "Ограничение 24 символа"
+        label.text = Resources.Strings.NewCategory.nameTextField.maxLen
         label.font = UIFont.systemFont(ofSize: 17)
         label.textAlignment = .center
         label.textColor = .ypRed
@@ -48,7 +48,7 @@ final class NewCategoryViewController: UIViewController {
     
     private lazy var doneButtonView: UIButton = {
         let button = CustomButton(type: .custom)
-        button.setTitle("Готово", for: .normal)
+        button.setTitle(Resources.Strings.NewCategory.doneButton.text, for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.layer.cornerRadius = 16
         button.setBackgroundColor(.ypBlack, for: .normal)
@@ -64,7 +64,7 @@ final class NewCategoryViewController: UIViewController {
         
         self.hideKeyboardWhenTappedAround()
         
-        self.title = "Новая категория"
+        self.title = Resources.Strings.NewCategory.title
         navigationItem.hidesBackButton = true
         view.backgroundColor = .white
         

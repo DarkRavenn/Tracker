@@ -50,7 +50,7 @@ final class ScheduleViewController: UIViewController {
     
     private lazy var doneButtonView: UIButton = {
         let button = UIButton(type: .custom)
-        button.setTitle("Готово", for: .normal)
+        button.setTitle(Resources.Strings.Schedule.DoneBytton.title, for: .normal)
         button.setTitleColor(.ypWhite, for: .normal)
         button.layer.cornerRadius = 16
         button.backgroundColor = .ypBlack
@@ -63,7 +63,7 @@ final class ScheduleViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.title = "Расписание"
+        self.title = Resources.Strings.Schedule.title
         navigationItem.hidesBackButton = true
         
         view.backgroundColor = .ypWhite

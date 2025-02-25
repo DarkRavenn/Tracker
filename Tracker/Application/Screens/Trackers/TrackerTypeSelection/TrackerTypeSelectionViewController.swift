@@ -26,11 +26,11 @@ final class TrackerTypeSelectionViewController: UIViewController {
         
         view.backgroundColor = .ypWhite
         
-        self.title = "Создание трекера"
+        self.title = Resources.Strings.TrackerTypeSelection.title
         
-        let regularEventButton = getButton("Привычка")
+        let regularEventButton = getButton(Resources.Strings.TrackerTypeSelection.regular)
         regularEventButton.addTarget(self, action: #selector(opencCreateTrackerWithSchedule), for: .touchUpInside)
-        let irregularEventButton = getButton("Нерегулярное событие")
+        let irregularEventButton = getButton(Resources.Strings.TrackerTypeSelection.irregular)
         irregularEventButton.addTarget(self, action: #selector(opencCreateTrackerWOSchedule), for: .touchUpInside)
 
         

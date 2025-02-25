@@ -61,7 +61,7 @@ final class TrackersViewController: UIViewController {
     
     private lazy var emptyTrackersTextLabel: UILabel = {
         let label = UILabel()
-        label.text = Resources.Strings.Trackers.trackersPlaceholder
+        label.text = Resources.Strings.Trackers.emptyTrackers
         label.font = UIFont.systemFont(ofSize: 12)
         label.textColor = .ypBlack
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -146,13 +146,10 @@ final class TrackersViewController: UIViewController {
         
         let days = dataProvider?.getTrackerRecords(by: tracker.id).count ?? 0
         
-        if days % 10 == 1 && days % 100 != 11 {
-            return "\(days) день"
-        } else if (days % 10 == 2 || days % 10 == 3 || days % 10 == 4) && (days % 100 < 10 || days % 100 > 20) {
-            return "\(days) дня"
-        } else {
-            return "\(days) дней"
-        }
+        return String.localizedStringWithFormat(
+            Resources.Strings.Trackers.daysTracked,
+            days
+        )
     }
     
     // Добавляет новый трекер в коллекцию
@@ -194,7 +191,7 @@ extension TrackersViewController: UICollectionViewDataSource, UICollectionViewDe
             } else {
                 setBGViewToCollection(trackersCollection,
                                       image: Resources.Images.Trackers.trackersPlaceholder,
-                                      text: Resources.Strings.Trackers.trackersPlaceholder)
+                                      text: Resources.Strings.Trackers.emptyTrackers)
             }
         } else {
             trackersCollection.backgroundView = nil

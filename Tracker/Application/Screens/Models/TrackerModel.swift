@@ -22,25 +22,25 @@ enum Weekday: Int, Codable {
     
     var fullName: String {
         switch self {
-        case .monday: return "Понедельник"
-        case .tuesday: return "Вторник"
-        case .wednesday: return "Среда"
-        case .thursday: return "Четверг"
-        case .friday: return "Пятница"
-        case .saturday: return "Суббота"
-        case .sunday: return "Воскресенье"
+        case .monday: return Resources.Strings.Schedule.Weekdays.mon
+        case .tuesday: return Resources.Strings.Schedule.Weekdays.tue
+        case .wednesday: return Resources.Strings.Schedule.Weekdays.wed
+        case .thursday: return Resources.Strings.Schedule.Weekdays.thu
+        case .friday: return Resources.Strings.Schedule.Weekdays.fri
+        case .saturday: return Resources.Strings.Schedule.Weekdays.sat
+        case .sunday: return Resources.Strings.Schedule.Weekdays.sun
         }
     }
     
     var shortName: String {
         switch self {
-        case .monday: return "Пн"
-        case .tuesday: return "Вт"
-        case .wednesday: return "Ср"
-        case .thursday: return "Чт"
-        case .friday: return "Пт"
-        case .saturday: return "Сб"
-        case .sunday: return "Вс"
+        case .monday: return Resources.Strings.TrackerCreation.Weekdays.mon
+        case .tuesday: return Resources.Strings.TrackerCreation.Weekdays.tue
+        case .wednesday: return Resources.Strings.TrackerCreation.Weekdays.wed
+        case .thursday: return Resources.Strings.TrackerCreation.Weekdays.thu
+        case .friday: return Resources.Strings.TrackerCreation.Weekdays.fri
+        case .saturday: return Resources.Strings.TrackerCreation.Weekdays.sat
+        case .sunday: return Resources.Strings.TrackerCreation.Weekdays.sun
         }
     }
 }
