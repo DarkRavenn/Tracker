@@ -63,7 +63,7 @@ enum Resources {
             static var color = NSLocalizedString("trackerCreation.color", comment: "Цвет")
             static var category = NSLocalizedString("trackerCreation.category", comment: "Категория")
             static var schedule = NSLocalizedString("trackerCreation.schedule", comment: "Расписание")
-            static var createButton = NSLocalizedString("trackerCreation.createButton", comment: "Создать")
+            static var saveButton = NSLocalizedString("trackerCreation.saveButton", comment: "Создать")
             static var cancelButton = NSLocalizedString("trackerCreation.cancelButton", comment: "Отменить")
             static var title = NSLocalizedString("trackerCreation.title", comment: "Новая привычка")
             
