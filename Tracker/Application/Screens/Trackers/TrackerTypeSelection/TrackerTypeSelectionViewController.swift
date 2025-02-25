@@ -29,9 +29,9 @@ final class TrackerTypeSelectionViewController: UIViewController {
         self.title = Resources.Strings.TrackerTypeSelection.title
         
         let regularEventButton = getButton(Resources.Strings.TrackerTypeSelection.regular)
-        regularEventButton.addTarget(self, action: #selector(opencCreateTrackerWithSchedule), for: .touchUpInside)
+        regularEventButton.addTarget(self, action: #selector(openCreateTrackerWithSchedule), for: .touchUpInside)
         let irregularEventButton = getButton(Resources.Strings.TrackerTypeSelection.irregular)
-        irregularEventButton.addTarget(self, action: #selector(opencCreateTrackerWOSchedule), for: .touchUpInside)
+        irregularEventButton.addTarget(self, action: #selector(openCreateTrackerWOSchedule), for: .touchUpInside)
 
         
         view.addSubview(regularEventButton)
@@ -62,11 +62,11 @@ final class TrackerTypeSelectionViewController: UIViewController {
         return button
     }
     
-    @objc private func opencCreateTrackerWithSchedule() {
+    @objc private func openCreateTrackerWithSchedule() {
         navigationController?.pushViewController(TrackerCreationViewController(onCreateTracker: self.onAddTracker, isRegular: true), animated: true)
     }
     
-    @objc private func opencCreateTrackerWOSchedule() {
+    @objc private func openCreateTrackerWOSchedule() {
         navigationController?.pushViewController(TrackerCreationViewController(onCreateTracker: self.onAddTracker, isRegular: false), animated: true)
     }
 }
