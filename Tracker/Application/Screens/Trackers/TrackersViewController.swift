@@ -99,6 +99,7 @@ final class TrackersViewController: UIViewController {
     private let datePicker = CustomDatePicker()
     private let userDefaults = UserDefaults.standard
     private let collectionParams = GeometricParams(cellCount: 2, leftInset: 0, rightInset: 0, cellSpacing: 9)
+    private let analyticsService = AnalyticsService()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -146,6 +147,16 @@ final class TrackersViewController: UIViewController {
                 guard let self = self else { return }
                 self.dateChanged()
             }
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        analyticsService.report(event: "open", params: ["screen" : "Main"])
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        analyticsService.report(event: "close", params: ["screen" : "Main"])
     }
     
     // проверяет, отмечен ли трекер как выполненный в текущую дату
