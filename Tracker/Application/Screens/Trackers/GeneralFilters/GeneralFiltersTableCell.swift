@@ -12,7 +12,7 @@ final class GeneralFiltersTableCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        backgroundColor = .ypLightGray
+        backgroundColor = .ypBackground
         
         layer.masksToBounds = true
         layer.cornerRadius = 16

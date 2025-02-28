@@ -28,6 +28,7 @@ final class GeneralFiltersViewController: UIViewController {
         table.delegate = self
         table.dataSource = self
         table.translatesAutoresizingMaskIntoConstraints = false
+        table.backgroundColor = .ypWhite
         return table
     }()
     
@@ -36,7 +37,7 @@ final class GeneralFiltersViewController: UIViewController {
         
         self.title = Resources.Strings.Trackers.filters
         navigationItem.hidesBackButton = true
-        view.backgroundColor = .white
+        view.backgroundColor = .ypWhite
         
         view.addSubview(tableView)
         
@@ -78,4 +79,3 @@ extension GeneralFiltersViewController: UITableViewDelegate {
         return 75
     }
 }
-

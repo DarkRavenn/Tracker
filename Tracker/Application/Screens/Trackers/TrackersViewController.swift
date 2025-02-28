@@ -115,6 +115,7 @@ final class TrackersViewController: UIViewController {
         
         mainStackView.addArrangedSubview(trackersCollection)
         scrollView.addSubview(mainStackView)
+        scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 50, right: 0)
         view.addSubview(scrollView)
         view.addSubview(filtersButton)
         

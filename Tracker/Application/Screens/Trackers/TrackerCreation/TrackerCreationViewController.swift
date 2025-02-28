@@ -49,7 +49,7 @@ final class TrackerCreationViewController: UIViewController {
         self.isRegular = isRegular
         self.initialValues = initialValues
         self.daysTrackedLabelText = daysTrackedLabelText
-
+        
         self.tableOptions.append(tableOption(title: Resources.Strings.TrackerCreation.category, vc: TrackerTypeSelectionViewController.self))
         if isRegular {
             // если событие регулярное (привычка), то добавляем в меню пункт "Расписание"
@@ -131,6 +131,7 @@ final class TrackerCreationViewController: UIViewController {
         collection.delegate = self
         collection.isScrollEnabled = false
         collection.allowsMultipleSelection = true
+        collection.backgroundColor = .ypWhite
         return collection
     }()
     
@@ -138,6 +139,7 @@ final class TrackerCreationViewController: UIViewController {
         let button = CustomButton(type: .custom)
         button.setTitle(Resources.Strings.TrackerCreation.saveButton, for: .normal)
         button.setTitleColor(.ypWhite, for: .normal)
+        button.setTitleColor(.white, for: .disabled)
         button.layer.cornerRadius = 16
         button.setBackgroundColor(.ypBlack, for: .normal)
         button.setBackgroundColor(.ypGray, for: .disabled)
@@ -164,10 +166,25 @@ final class TrackerCreationViewController: UIViewController {
         
         self.hideKeyboardWhenTappedAround()
         
-        self.title = NSLocalizedString(
-            "trackerCreation.title.\(initialValues == nil ? "create" :"edit").\(isRegular ? "regular" : "irregular")",
-            comment: "Title"
-        )
+        switch (initialValues, isRegular) {
+        case (nil, true):
+            self.title = Resources.Strings.TrackerCreation.Title.Create.regular
+            createButtonView.setTitle(Resources.Strings.TrackerCreation.createButton, for: .normal)
+            createButtonView.setTitle(Resources.Strings.TrackerCreation.createButton, for: .disabled)
+        case (nil, false):
+            self.title = Resources.Strings.TrackerCreation.Title.Create.irregular
+            createButtonView.setTitle(Resources.Strings.TrackerCreation.createButton, for: .normal)
+            createButtonView.setTitle(Resources.Strings.TrackerCreation.createButton, for: .disabled)
+        case (_, true):
+            self.title = Resources.Strings.TrackerCreation.Title.Edit.regular
+            createButtonView.setTitle(Resources.Strings.TrackerCreation.saveButton, for: .normal)
+            createButtonView.setTitle(Resources.Strings.TrackerCreation.saveButton, for: .disabled)
+        case (_, false):
+            self.title = Resources.Strings.TrackerCreation.Title.Edit.irregular
+            createButtonView.setTitle(Resources.Strings.TrackerCreation.saveButton, for: .normal)
+            createButtonView.setTitle(Resources.Strings.TrackerCreation.saveButton, for: .disabled)
+        }
+        
         navigationItem.hidesBackButton = true
         
         view.backgroundColor = .ypWhite
@@ -186,7 +203,7 @@ final class TrackerCreationViewController: UIViewController {
         }
         
         mainStackView.addArrangedSubview(daysTrackedLabel)
-
+        
         // название трекера
         let nameStackView = UIStackView(arrangedSubviews: [nameTextField, longNameWarningLabel])
         nameStackView.axis = .vertical
@@ -237,7 +254,10 @@ final class TrackerCreationViewController: UIViewController {
     
     private func onUpdateSchedule(_ schedule: [Weekday]) {
         self.schedule = schedule
-        if schedule.count == 7 {
+        
+        if schedule.isEmpty {
+            
+        } else if schedule.count == 7 {
             tableOptions[1].subtitle = Resources.Strings.TrackerCreation.Schedule.everyDay
         } else {
             self.tableOptions[1].subtitle = schedule.map { weekdaysText[$0.rawValue].shortName}.joined(separator: ", ")

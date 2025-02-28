@@ -53,13 +53,14 @@ final class CategoryViewController: UIViewController {
         table.delegate = self
         table.dataSource = self
         table.translatesAutoresizingMaskIntoConstraints = false
+        table.backgroundColor = .ypWhite
         return table
     }()
     
     private lazy var newCategoryButtonView: UIButton = {
         let button = UIButton(type: .custom)
         button.setTitle(Resources.Strings.Category.NewCategoryButton.text, for: .normal)
-        button.setTitleColor(.white, for: .normal)
+        button.setTitleColor(.ypWhite, for: .normal)
         button.layer.cornerRadius = 16
         button.backgroundColor = .ypBlack
         button.isEnabled = true
@@ -71,9 +72,9 @@ final class CategoryViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.title = Resources.Strings.NewCategory.title
+        self.title = Resources.Strings.Category.title
         navigationItem.hidesBackButton = true
-        view.backgroundColor = .white
+        view.backgroundColor = .ypWhite
         
         vm.getCategories()
         
@@ -179,7 +180,7 @@ extension CategoryViewController {
             label.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 8),
             label.widthAnchor.constraint(equalToConstant: 200),
         ])
-        
+        tableView.backgroundColor = .ypWhite
         tableView.backgroundView = view;
     }
 }

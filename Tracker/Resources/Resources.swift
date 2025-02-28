@@ -58,7 +58,6 @@ enum Resources {
                 }
             }
         }
-//        Resources.Strings.Trackers.ContextMenu
         
         enum TrackerTypeSelection {
             static var title = NSLocalizedString("trackerTypeSelection.title", comment: "Создание трекера")
@@ -71,9 +70,22 @@ enum Resources {
             static var color = NSLocalizedString("trackerCreation.color", comment: "Цвет")
             static var category = NSLocalizedString("trackerCreation.category", comment: "Категория")
             static var schedule = NSLocalizedString("trackerCreation.schedule", comment: "Расписание")
-            static var saveButton = NSLocalizedString("trackerCreation.saveButton", comment: "Создать")
+            static var createButton = NSLocalizedString("trackerCreation.createButton", comment: "Создать")
+            static var saveButton = NSLocalizedString("trackerCreation.saveButton", comment: "Сохранить")
             static var cancelButton = NSLocalizedString("trackerCreation.cancelButton", comment: "Отменить")
             static var title = NSLocalizedString("trackerCreation.title", comment: "Новая привычка")
+            
+            enum Title {
+                enum Create {
+                    static var regular = NSLocalizedString("trackerCreation.title.create.regular", comment: "Создание привычки")
+                    static var irregular = NSLocalizedString("trackerCreation.title.create.irregular", comment: "Новое нерегулярное событие")
+                }
+                
+                enum Edit {
+                    static var regular = NSLocalizedString("trackerCreation.title.edit.regular", comment: "Редактирование привычки")
+                    static var irregular = NSLocalizedString("trackerCreation.title.edit.irregular", comment: "Редактирование события")
+                }
+            }
             
             enum NameTextField {
                 static var placeholder = NSLocalizedString("trackerCreation.nameTextField.placeholder", comment: "Введите название трекера")
@@ -96,6 +108,8 @@ enum Resources {
         }
         
         enum Category {
+            static var title = NSLocalizedString("category.title", comment: "Категория")
+
             enum NewCategoryButton {
                 static var text = NSLocalizedString("category.newCategoryButton.text", comment: "Добавить категорию")
             }

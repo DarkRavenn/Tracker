@@ -25,7 +25,7 @@ final class TrackerCollectionCell: UICollectionViewCell {
         let label = UILabel()
         label.font = .systemFont(ofSize: 12)
         label.textAlignment = .center
-        label.backgroundColor = .ypWhite.withAlphaComponent(0.3)
+        label.backgroundColor = .white.withAlphaComponent(0.3)
         label.layer.cornerRadius = 12
         label.clipsToBounds = true
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -34,7 +34,7 @@ final class TrackerCollectionCell: UICollectionViewCell {
 
     lazy var pinImage: UIImageView = {
         let imageView = UIImageView(image: UIImage(systemName: "pin.fill"))
-        imageView.tintColor = .ypWhite
+        imageView.tintColor = .white
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
@@ -43,7 +43,7 @@ final class TrackerCollectionCell: UICollectionViewCell {
         let label = UILabel()
         label.numberOfLines = 2
         label.font = .systemFont(ofSize: 12, weight: .medium)
-        label.textColor = .ypWhite
+        label.textColor = .white
         label.textAlignment = .left
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -61,6 +61,8 @@ final class TrackerCollectionCell: UICollectionViewCell {
         let button = UIButton()
         button.setTitle("+", for: .normal)
         button.setTitle("✓", for: .selected)
+        button.setTitleColor(.ypWhite, for: .normal)
+        button.setTitleColor(.ypWhite, for: .selected)
         button.layer.cornerRadius = 17
         button.addTarget(self, action: #selector(onAddButtonTapped), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false

@@ -65,7 +65,7 @@
 "trackerCreation.saveButton" = "Save";
 "trackerCreation.cancelButton" = "Cancel";
 "trackerCreation.title.create.regular" = "New habit";
-"trackerCreation.title.create.irregular" = "New event";
+"trackerCreation.title.create.irregular" = "A new irregular event";
 "trackerCreation.title.edit.regular" = "Edit habit";
 "trackerCreation.title.edit.irregular" = "Edit event";
 

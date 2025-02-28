@@ -49,7 +49,8 @@ final class NewCategoryViewController: UIViewController {
     private lazy var doneButtonView: UIButton = {
         let button = CustomButton(type: .custom)
         button.setTitle(Resources.Strings.NewCategory.doneButton.text, for: .normal)
-        button.setTitleColor(.white, for: .normal)
+        button.setTitleColor(.ypWhite, for: .normal)
+        button.setTitleColor(.white, for: .disabled)
         button.layer.cornerRadius = 16
         button.setBackgroundColor(.ypBlack, for: .normal)
         button.setBackgroundColor(.ypGray, for: .disabled)
@@ -66,7 +67,7 @@ final class NewCategoryViewController: UIViewController {
         
         self.title = Resources.Strings.NewCategory.title
         navigationItem.hidesBackButton = true
-        view.backgroundColor = .white
+        view.backgroundColor = .ypWhite
         
         view.addSubview(nameTextField)
         view.addSubview(longNameWarningLabel)
