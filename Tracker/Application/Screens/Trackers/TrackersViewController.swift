@@ -152,12 +152,18 @@ final class TrackersViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        analyticsService.report(event: "open", params: ["screen" : "Main"])
+        let event = "openScreenTracker"
+        let params = ["event" : "open", "screen" : "Main"]
+        print("[Analytics:] event: \(event) params: \(params)")
+        analyticsService.report(event: event, params: params)
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        analyticsService.report(event: "close", params: ["screen" : "Main"])
+        let event = "closeScreenTracker"
+        let params = ["event" : "close", "screen" : "Main"]
+        print("[Analytics:] event: \(event) params: \(params)")
+        analyticsService.report(event: event, params: params)
     }
     
     // проверяет, отмечен ли трекер как выполненный в текущую дату
@@ -235,11 +241,19 @@ final class TrackersViewController: UIViewController {
     
     // добавление нового трекера
     @objc private func addTapped() {
+        let event = "addTrackerButtonIsPressed"
+        let params = ["event" : "click", "screen" : "Main", "item" : "add_track"]
+        print("[Analytics:] event: \(event) params: \(params)")
+        analyticsService.report(event: event, params: params)
         present(UINavigationController(rootViewController: TrackerTypeSelectionViewController(onAddTracker: addTracker)), animated: true)
     }
     
     // выбор фильтра
     @objc private func openFilters() {
+        let event = "filtersButtonIsPressed"
+        let params = ["event" : "click", "screen" : "Main", "item" : "filter"]
+        print("[Analytics:] event: \(event) params: \(params)")
+        analyticsService.report(event: event, params: params)
         present(
             UINavigationController(
                 rootViewController: GeneralFiltersViewController(
@@ -461,6 +475,12 @@ extension TrackersViewController: UICollectionViewDelegate {
         dataProvider?.pinTracker(tracker.id, setTo: !tracker.isPinned)
     }
     func editTrackerAction(_ tracker: Tracker) {
+        
+        let event = "editButtonIsPressedInContextMenu"
+        let params = ["event" : "click", "screen" : "Main", "item" : "edit"]
+        print("[Analytics:] event: \(event) params: \(params)")
+        analyticsService.report(event: event, params: params)
+        
         present(UINavigationController(rootViewController: TrackerCreationViewController(
             onCreateTracker: self.editTracker,
             isRegular: !tracker.schedule.isEmpty,
@@ -469,6 +489,12 @@ extension TrackersViewController: UICollectionViewDelegate {
         )), animated: true)
     }
     func removeTrackerAction(_ tracker: Tracker) {
+        
+        let event = "removeButtonIsPressedInContextMenu"
+        let params = ["event" : "click", "screen" : "Main", "item" : "delete"]
+        print("[Analytics:] event: \(event) params: \(params)")
+        analyticsService.report(event: event, params: params)
+        
         let modalTitleText = Resources.Strings.Trackers.ContextMenu.RemoveModal.title
         let modalOkText = Resources.Strings.Trackers.ContextMenu.RemoveModal.ok
         let modalCancelText = Resources.Strings.Trackers.ContextMenu.RemoveModal.cancel

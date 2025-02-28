@@ -9,7 +9,7 @@ import UIKit
 
 // ячейка трекера
 final class TrackerCollectionCell: UICollectionViewCell {
-    
+    private let analyticsService = AnalyticsService()
     static let identifier = "TrackerCell"
     
     var onUpdateTrackersDoneStatus: (() -> Void)? = nil
@@ -115,6 +115,12 @@ final class TrackerCollectionCell: UICollectionViewCell {
     }
 
     @objc private func onAddButtonTapped(_ button: UIButton) {
+        
+        let event = "TrackerExecutionButtonIsPressed"
+        let params = ["event" : "click", "screen" : "Main", "item" : "track"]
+        print("[Analytics:] event: \(event) params: \(params)")
+        analyticsService.report(event: event, params: params)
+        
         button.isSelected.toggle()
         if let onUpdateTrackersDoneStatus { onUpdateTrackersDoneStatus() }
     }
