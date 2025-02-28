@@ -81,7 +81,7 @@ final class TrackersViewController: UIViewController {
     
     private lazy var filtersButton: UIButton = {
         let button = UIButton()
-        button.setTitle(NSLocalizedString("trackers.filters", comment: "Фильтры"), for: .normal)
+        button.setTitle(Resources.Strings.Trackers.filters, for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 17, weight: .regular)
         button.layer.borderWidth = 0
         button.layer.borderColor = UIColor.ypRed.cgColor

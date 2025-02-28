@@ -71,7 +71,7 @@ final class CategoryViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.title = NSLocalizedString("category.title", comment: "Добавить категорию")
+        self.title = Resources.Strings.NewCategory.title
         navigationItem.hidesBackButton = true
         view.backgroundColor = .white
         

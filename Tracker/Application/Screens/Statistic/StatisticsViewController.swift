@@ -23,7 +23,7 @@ final class StatisticsViewController: UIViewController {
     
     private lazy var doneTitleLabel: UILabel = {
         let label = UILabel()
-        label.text = NSLocalizedString("statistics.doneCount", comment: "Трекеров завершено")
+        label.text = Resources.Strings.Statistics.doneCount
         label.font = .systemFont(ofSize: 12, weight: .medium)
         label.textAlignment = .left
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -58,7 +58,7 @@ final class StatisticsViewController: UIViewController {
     
     private lazy var noDataLabel: UILabel = {
         let label = UILabel()
-        label.text = NSLocalizedString("statistics.empty", comment: "Анализировать пока нечего")
+        label.text = Resources.Strings.Statistics.empty
         label.font = UIFont.systemFont(ofSize: 12)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -75,7 +75,7 @@ final class StatisticsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        navigationItem.title = NSLocalizedString("statistics.title", comment: "Статистика")
+        navigationItem.title = Resources.Strings.Statistics.title
         navigationItem.largeTitleDisplayMode = .always
         navigationController?.navigationBar.prefersLargeTitles = true
         

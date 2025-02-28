@@ -114,12 +114,7 @@ final class TrackerStore {
     func editTracker(_ tracker: Tracker) throws {
         let fetchRequest = NSFetchRequest<TrackerCategoryCoreData>(entityName: "TrackerCategoryCoreData")
         fetchRequest.predicate = NSPredicate(format: "title == %@", tracker.category)
-        var categories: [TrackerCategoryCoreData] = []
-        do {
-            categories = try context.fetch(fetchRequest)
-        } catch {
-            print("Failed to request categories")
-        }
+        let categories = try context.fetch(fetchRequest)
         
         let category: TrackerCategoryCoreData
         if let existingCategory = categories.first {
@@ -130,7 +125,7 @@ final class TrackerStore {
         }
 
         if let objectID = context.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: URL(string: tracker.id)!) {
-            if let item = try? context.existingObject(with: objectID) as? TrackerCoreData {
+            if let item = try context.existingObject(with: objectID) as? TrackerCoreData {
                 item.name = tracker.name
                 item.category = category
                 
@@ -156,7 +151,7 @@ final class TrackerStore {
 extension TrackerCoreData {
     @objc dynamic var computedCategory: String {
         if isPinned {
-            return NSLocalizedString("trackers.category.pinned", comment: "Закрепленные")
+            return Resources.Strings.Category.pinned
         } else {
             return category?.title ?? "---"
         }

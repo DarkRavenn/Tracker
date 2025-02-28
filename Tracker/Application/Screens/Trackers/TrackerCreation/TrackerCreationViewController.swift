@@ -25,12 +25,12 @@ final class TrackerCreationViewController: UIViewController {
     
     private let collectionParams = GeometricParams(cellCount: 6, leftInset: 8, rightInset: 8, cellSpacing: 6)
     private lazy var collectionContent: [CollectionSectionsContent] = [
-        .init(title: NSLocalizedString("trackerCreation.emoji", comment: "Emoji"), elements: [
+        .init(title: Resources.Strings.TrackerCreation.emoji, elements: [
             "🙂", "😻", "🌺", "🐶", "❤️", "😱",
             "😇", "😡", "🥶", "🤔", "🙌", "🍔",
             "🥦", "🏓", "🥇", "🎸", "🏝️", "😪"
         ]),
-        .init(title: NSLocalizedString("trackerCreation.color", comment: "Цвет"), elements: (1...18).compactMap { "ypColorSelection\($0)" })
+        .init(title: Resources.Strings.TrackerCreation.color, elements: (1...18).compactMap { "ypColorSelection\($0)" })
     ]
     
     private var trackerName: String = ""

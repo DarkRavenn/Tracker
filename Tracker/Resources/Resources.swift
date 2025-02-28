@@ -36,6 +36,14 @@ enum Resources {
             static var emptyTrackers = NSLocalizedString("trackers.emptyTrackers", comment: "Что будем отслеживать?")
             static var noTrackersFound = NSLocalizedString("trackers.noTrackersFound", comment: "Ничего не найдено")
             static var daysTracked = NSLocalizedString("daysTracked", comment: "Number of days tracked")
+            static var filters = NSLocalizedString("trackers.filters", comment: "Фильтры")
+            
+            enum Filters {
+                static var all = NSLocalizedString("trackers.filters.all", comment: "Все трекеры")
+                static var today = NSLocalizedString("trackers.filters.today", comment: "Трекеры на сегодня")
+                static var done = NSLocalizedString("trackers.filters.done", comment: "Завершенные")
+                static var undone = NSLocalizedString("trackers.filters.undone", comment: "Не завершенные")
+            }
             
             enum ContextMenu {
                 static var pin = NSLocalizedString("trackers.contextMenu.pin", comment: "Открепить")
@@ -95,6 +103,8 @@ enum Resources {
             enum Table {
                 static var placeholer = NSLocalizedString("category.table.placeholer", comment: "Привычки и события можно объединить по смыслу")
             }
+            
+            static var pinned = NSLocalizedString("trackers.category.pinned", comment: "Закрепленные")
         }
         
         enum NewCategory {
@@ -137,6 +147,12 @@ enum Resources {
             enum ButtonText {
                 static var pageOneOfPageTwo = NSLocalizedString("onboarding.page1.text", comment: "Вот это технологии!")
             }
+        }
+        
+        enum Statistics {
+            static var doneCount = NSLocalizedString("statistics.doneCount", comment: "Трекеров завершено")
+            static var empty = NSLocalizedString("statistics.empty", comment: "Анализировать пока нечего")
+            static var title = NSLocalizedString("statistics.title", comment: "Статистика")
         }
         
         enum UserDefaults {
