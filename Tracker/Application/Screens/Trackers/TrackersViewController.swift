@@ -115,7 +115,6 @@ final class TrackersViewController: UIViewController {
         
         mainStackView.addArrangedSubview(trackersCollection)
         scrollView.addSubview(mainStackView)
-        scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 50, right: 0)
         view.addSubview(scrollView)
         view.addSubview(filtersButton)
         
@@ -218,6 +217,7 @@ final class TrackersViewController: UIViewController {
         case .today:
             currentDate = Date()
             datePicker.datePicker.date = Date()
+            datePicker.changeData()
             doneFilterValue = nil
         case .done:
             doneFilterValue = true
@@ -225,17 +225,27 @@ final class TrackersViewController: UIViewController {
             doneFilterValue = false
         }
         updateFilters()
-
+        
     }
     
     // обновление текущей даты
     @objc private func dateChanged() {
-        currentDate = datePicker.datePicker.date
         
-        if currentDate != Date() && generalFilterValue == .today {
+        let calendar = Calendar.current
+        let components = calendar.dateComponents([.year, .month, .day], from: datePicker.datePicker.date)
+        let components2 = calendar.dateComponents([.year, .month, .day], from: Date())
+        let normalizedDate = calendar.date(from: components)
+        let normalizedDate2 = calendar.date(from: components2)
+        
+        guard let normalizedDate,
+              let normalizedDate2 else { return }
+        
+        currentDate = normalizedDate
+        
+        if currentDate != normalizedDate2 && generalFilterValue == .today {
             generalFilterValue = .all
         }
-
+        
         updateFilters()
     }
     
@@ -274,21 +284,25 @@ extension TrackersViewController: UICollectionViewDataSource, UICollectionViewDe
         let isSearching = !(searchBarController.searchBar.text?.isEmpty ?? true)
         
         if sectionsCount == 0 {
-            if isSearching {
-                setBGViewToCollection(trackersCollection,
-                                      image: Resources.Images.Trackers.noTrackersFound,
-                                      text: Resources.Strings.Trackers.noTrackersFound)
+            let image: UIImage
+            let text: String
+
+            // Логика выбора изображения и текста
+            if isSearching || generalFilterValue != .all {
+                image = Resources.Images.Trackers.noTrackersFound
+                text = Resources.Strings.Trackers.noTrackersFound
             } else {
-                setBGViewToCollection(trackersCollection,
-                                      image: Resources.Images.Trackers.trackersPlaceholder,
-                                      text: Resources.Strings.Trackers.emptyTrackers)
+                image = Resources.Images.Trackers.trackersPlaceholder
+                text = Resources.Strings.Trackers.emptyTrackers
             }
+            
+            setBGViewToCollection(trackersCollection, image: image, text: text)
             filtersButton.isHidden = true
         } else {
             trackersCollection.backgroundView = nil
             filtersButton.isHidden = false
         }
-
+        
         return sectionsCount
     }
     
