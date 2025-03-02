@@ -9,7 +9,7 @@ import UIKit
 
 // ячейка трекера
 final class TrackerCollectionCell: UICollectionViewCell {
-    
+    private let analyticsService = AnalyticsService()
     static let identifier = "TrackerCell"
     
     var onUpdateTrackersDoneStatus: (() -> Void)? = nil
@@ -25,18 +25,25 @@ final class TrackerCollectionCell: UICollectionViewCell {
         let label = UILabel()
         label.font = .systemFont(ofSize: 12)
         label.textAlignment = .center
-        label.backgroundColor = .ypWhite.withAlphaComponent(0.3)
+        label.backgroundColor = .white.withAlphaComponent(0.3)
         label.layer.cornerRadius = 12
         label.clipsToBounds = true
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
 
+    lazy var pinImage: UIImageView = {
+        let imageView = UIImageView(image: UIImage(systemName: "pin.fill"))
+        imageView.tintColor = .white
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
+    }()
+
     lazy var textLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 2
         label.font = .systemFont(ofSize: 12, weight: .medium)
-        label.textColor = .ypWhite
+        label.textColor = .white
         label.textAlignment = .left
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -54,6 +61,8 @@ final class TrackerCollectionCell: UICollectionViewCell {
         let button = UIButton()
         button.setTitle("+", for: .normal)
         button.setTitle("✓", for: .selected)
+        button.setTitleColor(.ypWhite, for: .normal)
+        button.setTitleColor(.ypWhite, for: .selected)
         button.layer.cornerRadius = 17
         button.addTarget(self, action: #selector(onAddButtonTapped), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -66,6 +75,7 @@ final class TrackerCollectionCell: UICollectionViewCell {
         contentView.addSubview(cardView)
         cardView.addSubview(emojiLabel)
         cardView.addSubview(textLabel)
+        cardView.addSubview(pinImage)
         contentView.addSubview(infoLabel)
         contentView.addSubview(addButton)
 
@@ -79,6 +89,11 @@ final class TrackerCollectionCell: UICollectionViewCell {
             emojiLabel.leadingAnchor.constraint(equalTo: cardView.leadingAnchor, constant: 12),
             emojiLabel.widthAnchor.constraint(equalToConstant: 24),
             emojiLabel.heightAnchor.constraint(equalToConstant: 24),
+            
+            pinImage.topAnchor.constraint(equalTo: emojiLabel.topAnchor, constant: 6),
+            pinImage.trailingAnchor.constraint(equalTo: cardView.trailingAnchor, constant: -12),
+            pinImage.widthAnchor.constraint(equalToConstant: 12),
+            pinImage.heightAnchor.constraint(equalToConstant: 12),
             
             textLabel.topAnchor.constraint(equalTo: emojiLabel.bottomAnchor, constant: 8),
             textLabel.leadingAnchor.constraint(equalTo: cardView.leadingAnchor, constant: 12),
@@ -100,6 +115,12 @@ final class TrackerCollectionCell: UICollectionViewCell {
     }
 
     @objc private func onAddButtonTapped(_ button: UIButton) {
+        
+        let event = "TrackerExecutionButtonIsPressed"
+        let params = ["event" : "click", "screen" : "Main", "item" : "track"]
+        print("[Analytics:] event: \(event) params: \(params)")
+        analyticsService.report(event: event, params: params)
+        
         button.isSelected.toggle()
         if let onUpdateTrackersDoneStatus { onUpdateTrackersDoneStatus() }
     }

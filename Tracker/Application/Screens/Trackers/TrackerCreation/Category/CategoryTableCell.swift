@@ -71,7 +71,7 @@ final class CategoryTableCell: UITableViewCell {
     
     func updateCategorySelection(isSelected: Bool) {
         isSelectedCategory = isSelected
-        accessoryViewLabel.text = isSelectedCategory ? "✓" : ""
+        accessoryView = isSelectedCategory ? UIImageView(image: UIImage(systemName: "checkmark")) : nil
     }
     
     func updateSeparatorInset() {

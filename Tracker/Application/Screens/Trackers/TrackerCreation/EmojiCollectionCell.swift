@@ -25,7 +25,7 @@ final class EmojiCollectionCell: UICollectionViewCell {
         super.init(frame: frame)
         
         // Закруглим края для ячейки:
-        contentView.layer.cornerRadius = 8
+        contentView.layer.cornerRadius = 16
         contentView.layer.masksToBounds = true
         contentView.addSubview(textLabel)
 

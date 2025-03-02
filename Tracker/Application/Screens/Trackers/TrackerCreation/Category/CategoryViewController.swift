@@ -53,13 +53,14 @@ final class CategoryViewController: UIViewController {
         table.delegate = self
         table.dataSource = self
         table.translatesAutoresizingMaskIntoConstraints = false
+        table.backgroundColor = .ypWhite
         return table
     }()
     
     private lazy var newCategoryButtonView: UIButton = {
         let button = UIButton(type: .custom)
-        button.setTitle("Добавить категорию", for: .normal)
-        button.setTitleColor(.white, for: .normal)
+        button.setTitle(Resources.Strings.Category.NewCategoryButton.text, for: .normal)
+        button.setTitleColor(.ypWhite, for: .normal)
         button.layer.cornerRadius = 16
         button.backgroundColor = .ypBlack
         button.isEnabled = true
@@ -71,9 +72,9 @@ final class CategoryViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.title = "Категория"
+        self.title = Resources.Strings.Category.title
         navigationItem.hidesBackButton = true
-        view.backgroundColor = .white
+        view.backgroundColor = .ypWhite
         
         vm.getCategories()
         
@@ -115,7 +116,7 @@ final class CategoryViewController: UIViewController {
 extension CategoryViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if (vm.categories.count == 0) {
-            setBGViewToTable(imageName: "trackers-placeholder", text: "Привычки и события можно объединить по смыслу")
+            setBGViewToTable(image: Resources.Images.Trackers.trackersPlaceholder, text: Resources.Strings.Category.Table.placeholer)
         } else {
             tableView.backgroundView = nil
         }
@@ -151,11 +152,11 @@ extension CategoryViewController: UITableViewDelegate {
 
 // для настройки плейсхолдеров таблицы с категориями
 extension CategoryViewController {
-    func setBGViewToTable(imageName: String, text: String) {
+    func setBGViewToTable(image: UIImage, text: String) {
         let view = UIView(frame: CGRect(x: 0, y: 0, width: tableView.bounds.size.width, height: tableView.bounds.size.height))
         
         let imageView = UIImageView()
-        imageView.image = UIImage(named: imageName)
+        imageView.image = image
         imageView.translatesAutoresizingMaskIntoConstraints = false
         
         let label = UILabel()
@@ -179,7 +180,7 @@ extension CategoryViewController {
             label.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 8),
             label.widthAnchor.constraint(equalToConstant: 200),
         ])
-        
+        tableView.backgroundColor = .ypWhite
         tableView.backgroundView = view;
     }
 }

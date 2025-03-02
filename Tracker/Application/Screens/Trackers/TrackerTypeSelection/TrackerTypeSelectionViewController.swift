@@ -10,9 +10,9 @@ import UIKit
 // экран выбора создания привычки или нерегулярного события
 final class TrackerTypeSelectionViewController: UIViewController {
     
-    private let onAddTracker: (Tracker, String) -> Void
+    private let onAddTracker: (Tracker) -> Void
     
-    init(onAddTracker: @escaping (Tracker, String) -> Void) {
+    init(onAddTracker: @escaping (Tracker) -> Void) {
         self.onAddTracker = onAddTracker
         super.init(nibName: nil, bundle: nil)
     }
@@ -26,12 +26,12 @@ final class TrackerTypeSelectionViewController: UIViewController {
         
         view.backgroundColor = .ypWhite
         
-        self.title = "Создание трекера"
+        self.title = Resources.Strings.TrackerTypeSelection.title
         
-        let regularEventButton = getButton("Привычка")
-        regularEventButton.addTarget(self, action: #selector(opencCreateTrackerWithSchedule), for: .touchUpInside)
-        let irregularEventButton = getButton("Нерегулярное событие")
-        irregularEventButton.addTarget(self, action: #selector(opencCreateTrackerWOSchedule), for: .touchUpInside)
+        let regularEventButton = getButton(Resources.Strings.TrackerTypeSelection.regular)
+        regularEventButton.addTarget(self, action: #selector(openCreateTrackerWithSchedule), for: .touchUpInside)
+        let irregularEventButton = getButton(Resources.Strings.TrackerTypeSelection.irregular)
+        irregularEventButton.addTarget(self, action: #selector(openCreateTrackerWOSchedule), for: .touchUpInside)
 
         
         view.addSubview(regularEventButton)
@@ -62,11 +62,11 @@ final class TrackerTypeSelectionViewController: UIViewController {
         return button
     }
     
-    @objc private func opencCreateTrackerWithSchedule() {
+    @objc private func openCreateTrackerWithSchedule() {
         navigationController?.pushViewController(TrackerCreationViewController(onCreateTracker: self.onAddTracker, isRegular: true), animated: true)
     }
     
-    @objc private func opencCreateTrackerWOSchedule() {
+    @objc private func openCreateTrackerWOSchedule() {
         navigationController?.pushViewController(TrackerCreationViewController(onCreateTracker: self.onAddTracker, isRegular: false), animated: true)
     }
 }

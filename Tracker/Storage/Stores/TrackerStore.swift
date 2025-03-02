@@ -65,6 +65,8 @@ final class TrackerStore {
         
         let trackerColor = uiColorMarshalling.toColor(from: trackerColorString)
         let trackerSchedule = ScheduleConvert().toWeekdays(trackerScheduleString)
+        let trackerIsPinned = TrackerCoreData.isPinned
+        let trackerComputedCategory = TrackerCoreData.computedCategory
         
         let tracker = Tracker(
             id: TrackerCoreData.objectID.uriRepresentation().absoluteString,
@@ -72,14 +74,17 @@ final class TrackerStore {
             color: trackerColor,
             emoji: trackerEmoji,
             schedule: trackerSchedule,
-            category: trackerCategory
+            category: trackerCategory,
+            computedCategory: trackerComputedCategory,
+            isPinned: trackerIsPinned
         )
         return tracker
     }
     
-    func getTrackers() throws -> [Tracker] {
+    func getTrackers(predicate: NSPredicate? = nil) throws -> [Tracker] {
         var trackersArray: [Tracker] = []
         let request = fetchRequest()
+        request.predicate = predicate
         let trackersFromDB = try context.fetch(request)
         for i in trackersFromDB {
             if let newTracker = createTracker(from: i) {
@@ -95,5 +100,60 @@ final class TrackerStore {
         let request = fetchRequest()
         let trackersFromDB = try context.fetch(request)
         return trackersFromDB
+    }
+    
+    func pinTracker(_ trackerID: String, value: Bool) throws {
+        if let objectID = context.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: URL(string: trackerID)!) {
+            if let item = try? context.existingObject(with: objectID) as? TrackerCoreData {
+                item.isPinned = value
+                try context.save()
+            }
+        }
+    }
+    
+    func editTracker(_ tracker: Tracker) throws {
+        let fetchRequest = NSFetchRequest<TrackerCategoryCoreData>(entityName: "TrackerCategoryCoreData")
+        fetchRequest.predicate = NSPredicate(format: "title == %@", tracker.category)
+        let categories = try context.fetch(fetchRequest)
+        
+        let category: TrackerCategoryCoreData
+        if let existingCategory = categories.first {
+            category = existingCategory
+        } else {
+            category = TrackerCategoryCoreData(context: context)
+            category.title = tracker.category
+        }
+
+        if let objectID = context.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: URL(string: tracker.id)!) {
+            if let item = try context.existingObject(with: objectID) as? TrackerCoreData {
+                item.name = tracker.name
+                item.category = category
+                
+                item.schedule = ScheduleConvert().toString(tracker.schedule)
+                item.color = uiColorMarshalling.toHexString(from: tracker.color)
+                item.emoji = tracker.emoji
+                
+                try context.save()
+            }
+        }
+    }
+
+    func removeTracker(_ trackerID: String) throws {
+        if let objectID = context.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: URL(string: trackerID)!) {
+            if let item = try? context.existingObject(with: objectID) as? TrackerCoreData {
+                context.delete(item)
+                try context.save()
+            }
+        }
+    }
+}
+
+extension TrackerCoreData {
+    @objc dynamic var computedCategory: String {
+        if isPinned {
+            return Resources.Strings.Category.pinned
+        } else {
+            return category?.title ?? "---"
+        }
     }
 }
